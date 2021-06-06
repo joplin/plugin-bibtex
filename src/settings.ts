@@ -10,6 +10,7 @@ export async function initConfigScreen (): Promise<void> {
 			name: "bibtex",
 			label: "BibTeX Plugin",
 			description: "Use locally stored BibTeX files to include citations in Joplin notes",
+			iconName: "fa fa-graduation-cap"
 		});
 
         // Bibtex file path
