@@ -1,5 +1,5 @@
 import joplin from 'api';
-import { initConfigScreen } from './settings';
+import { initConfigScreen } from './ui/settings';
 
 joplin.plugins.register({
 	onStart: async function() {
