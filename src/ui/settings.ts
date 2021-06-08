@@ -13,12 +13,14 @@ export async function initConfigScreen (): Promise<void> {
 			iconName: "fa fa-graduation-cap"
 		});
 
-        // Bibtex file path
-		await joplin.settings.registerSetting('bibtex.file', {
-			value: "",
-			type: 2,
-			section: 'bibtex.settings',
-			public: true,
-			label: 'BibTeX File',
+		// Bibtex file path
+		await joplin.settings.registerSettings({
+			"bibtex.file": {
+				value: "",
+				type: 2,
+				section: 'bibtex.settings',
+				public: true,
+				label: 'BibTeX File',
+			}
 		});
 }
