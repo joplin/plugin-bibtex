@@ -135,7 +135,7 @@ const pluginConfig = Object.assign({}, baseConfig, {
 		alias: {
 			api: path.resolve(__dirname, 'api'),
 		},
-		extensions: ['.tsx', '.ts', '.js'],
+		extensions: ['.tsx', '.ts', '.js', '.json'],
 	},
 	output: {
 		filename: 'index.js',
@@ -167,7 +167,7 @@ const extraScriptConfig = Object.assign({}, baseConfig, {
 		alias: {
 			api: path.resolve(__dirname, 'api'),
 		},
-		extensions: ['.tsx', '.ts', '.js'],
+		extensions: ['.tsx', '.ts', '.js', '.json'],
 	},
 });
 

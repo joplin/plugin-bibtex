@@ -27,5 +27,11 @@
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11",
     "yargs": "^16.2.0"
-  }
+  },
+  "dependencies": {
+    "citation-js": "^0.5.1"
+  },
+  "browser":{
+    "child_process": false
+  } 
 }
