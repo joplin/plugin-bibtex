@@ -1,4 +1,4 @@
-const { BibTex } = require("./BibTex")
+import * as Cite from "citation-js";
 
 /**
  * Parse the bibtex data and return an array of reference objects
@@ -6,9 +6,7 @@ const { BibTex } = require("./BibTex")
  * @param data raw bibtex data as a string
  * @returns Array of reference objects
  */
-export function parse (data: string): any[] {
-    let bib = new BibTex();
-    bib.content = data;
-    bib.parse();
-    return bib.data;
+export function parse (data: string) {
+    let citation = new Cite(data);
+    return citation.data;
 }
