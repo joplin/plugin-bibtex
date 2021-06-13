@@ -31,6 +31,13 @@ export class DataStore {
     }
 
     /**
+     * Returns all the stored references
+     */
+    public static getAllReferences (): any[] {
+        return this.references;
+    }
+
+    /**
      * Given a search query, returns an array of reference objects that matches the query
      * Currently tests whether or not the "title" field is compatible with the query or not
      * @param query Search Query
