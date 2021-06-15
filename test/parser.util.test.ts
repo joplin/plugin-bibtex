@@ -1,4 +1,5 @@
 import { parse } from "../src/util/parser.util";
+import { getDate } from "../src/util/get-date.util";
 import { Reference } from "../src/model/reference.model";
 import { readFileSync, writeFileSync } from "fs";
 import { join } from "path";
@@ -11,7 +12,7 @@ describe("Parser", () => {
 
         // Validation
         expect(result).toBeInstanceOf(Array);             // The result is an array of reference objects
-        
+
         let firstItem = result[0];
         expect(firstItem).toHaveProperty("id", "Steinbeck2003");
         expect(firstItem).toHaveProperty("type", "article-journal");
@@ -23,11 +24,11 @@ describe("Parser", () => {
         expect(firstItem).toHaveProperty("URL", "http://www.ncbi.nlm.nih.gov/pubmed/12653513");
         expect(firstItem).toHaveProperty("volume", "43");
         expect(firstItem).toHaveProperty("issue", "2");
-        expect(firstItem).toHaveProperty("date", {
-            year: 2005,
-            month: 2,
-            day: 14
-        });
+
+        // Compare Dates
+        let date = getDate(firstItem);
+        expect(date.getFullYear()).toBe(2005);
+        expect(date.getMonth()).toBe(2);
     });
 
     it("Invalid Format", () => {

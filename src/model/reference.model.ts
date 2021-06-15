@@ -14,9 +14,4 @@ export interface Reference {
     issue?: string,
     page?: string,
     issued: { "date-parts": number[][] },
-    date?: {            // Optional alias for issued with better format
-        year: number,
-        month?: number,
-        day?: number
-    }
 }
