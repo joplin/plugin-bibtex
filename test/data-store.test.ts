@@ -6,10 +6,10 @@ import { join } from "path";
 describe("Data Store", () => {
 
     it("Calling SetReference() updates the data in the store", () => {
-        let data: Reference[] = JSON.parse(readFileSync(join(__dirname, "assets", "test.json"), "utf-8"));
+        const data: Reference[] = JSON.parse(readFileSync(join(__dirname, "assets", "test.json"), "utf-8"));
         DataStore.setReferences(data);
 
-        let res: Reference[] = DataStore.getAllReferences();
+        const res: Reference[] = DataStore.getAllReferences();
 
         expect(res).toBeInstanceOf(Array);
 

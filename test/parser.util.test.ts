@@ -7,13 +7,13 @@ import { join } from "path";
 describe("Parser", () => {
 
     it("Correct Parsing", () => {
-        let raw = readFileSync(join(__dirname, "assets", "test.bib"), "utf-8");
-        let result: Reference[] = parse(raw);
+        const raw = readFileSync(join(__dirname, "assets", "test.bib"), "utf-8");
+        const result: Reference[] = parse(raw);
 
         // Validation
         expect(result).toBeInstanceOf(Array);             // The result is an array of reference objects
 
-        let firstItem = result[0];
+        const firstItem = result[0];
         expect(firstItem).toHaveProperty("id", "Steinbeck2003");
         expect(firstItem).toHaveProperty("type", "article-journal");
         expect(firstItem).toHaveProperty("title", "The Chemistry Development Kit (CDK): an open-source Java library for Chemo- and Bioinformatics.");
@@ -26,14 +26,14 @@ describe("Parser", () => {
         expect(firstItem).toHaveProperty("issue", "2");
 
         // Compare Dates
-        let date = getDate(firstItem);
+        const date = getDate(firstItem);
         expect(date.getFullYear()).toBe(2005);
         expect(date.getMonth()).toBe(2);
     });
 
     it("Invalid Format", () => {
         /// In the below example, there is no @ sign at the beginning
-        let raw = `
+        const raw = `
         article{Steinbeck2003,
             author = {Steinbeck, Christoph and Han, Yongquan and Kuhn, Stefan and Horlacher, Oliver and Luttmann, Edgar and Willighagen, Egon},
             year = {2003},
