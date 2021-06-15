@@ -1,12 +1,13 @@
-import { readFileSync, writeFileSync } from "fs";
 import { parse } from "../src/util/parser.util";
+import { Reference } from "../src/model/reference.model";
+import { readFileSync, writeFileSync } from "fs";
 import { join } from "path";
 
 describe("Parser", () => {
 
     it("Correct Parsing", () => {
         let raw = readFileSync(join(__dirname, "assets", "test.bib"), "utf-8");
-        let result = parse(raw);
+        let result: Reference[] = parse(raw);
 
         // Validation
         expect(result).toBeInstanceOf(Array);             // The result is an array of reference objects
@@ -16,8 +17,17 @@ describe("Parser", () => {
         expect(firstItem).toHaveProperty("type", "article-journal");
         expect(firstItem).toHaveProperty("title", "The Chemistry Development Kit (CDK): an open-source Java library for Chemo- and Bioinformatics.");
         expect(firstItem).toHaveProperty("author");
+        expect(firstItem.author).toBeInstanceOf(Array);
         expect(firstItem.author.length).toBe(6);
-        expect(firstItem["volume"]).toBe("43");
+        expect(firstItem).toHaveProperty("DOI", "10.1021/ci025584y");
+        expect(firstItem).toHaveProperty("URL", "http://www.ncbi.nlm.nih.gov/pubmed/12653513");
+        expect(firstItem).toHaveProperty("volume", "43");
+        expect(firstItem).toHaveProperty("issue", "2");
+        expect(firstItem).toHaveProperty("date", {
+            year: 2005,
+            month: 2,
+            day: 14
+        });
     });
 
     it("Invalid Format", () => {
