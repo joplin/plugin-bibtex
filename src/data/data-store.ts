@@ -1,3 +1,5 @@
+import { Reference } from "../model/reference.model";
+
 /**
  * This class is responsible for storing citation data and providing it when requested
  */
@@ -6,7 +8,7 @@ export class DataStore {
     /**
      * Array containing reference objects
      */
-    private static references: any[] = [];
+    private static references: Reference[] = [];
 
     /**
      * Private constructor to prevent the instantiation of this class
@@ -18,7 +20,7 @@ export class DataStore {
      * Runs in O(n), where n = this.references.length
      * @param refs array of reference objects
      */
-    public static setReferences (refs: any[]): void {
+    public static setReferences (refs: Reference[]): void {
         this.references = [];
 
         /*
@@ -35,7 +37,7 @@ export class DataStore {
      * Returns all the stored references
      * Runs in O(n), where n = this.references.length
      */
-    public static getAllReferences (): any[] {
+    public static getAllReferences (): Reference[] {
         /*
           Why not just return this.references?
           Because of the same reason illustrated above in setReferences()
@@ -50,10 +52,10 @@ export class DataStore {
      * @param query Search Query
      * @returns references matching the search criteria
      */
-    public static search (query: string): any[] {
+    public static search (query: string): Reference[] {
         return (
             this.references.
-                filter(ref => ref["title"].includes(query))
+                filter(ref => ref.title.includes(query))
         );
     }
 }
