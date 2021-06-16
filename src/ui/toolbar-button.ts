@@ -1,5 +1,6 @@
 import joplin from 'api';
 import { ToolbarButtonLocation } from 'api/types';
+import constants from '../constants';
 
 /**
  * Create a toolbar button that executes addBibTeXReference Command
@@ -8,8 +9,8 @@ import { ToolbarButtonLocation } from 'api/types';
  */
 export async function registerToolbarButton () {
     await joplin.views.toolbarButtons.create(
-        "bibtex_plugin_toolbar_button",
-        "addBibTeXReference",
+        constants.PLUGIN_TOOLBAR_BUTTON_ID,
+        constants.ADD_BIBTEX_REFERENCE_COMMAND,
         ToolbarButtonLocation.EditorToolbar
     );
 }
