@@ -1,8 +1,8 @@
 import joplin from "api";
 import { DataStore } from "../../data/data-store";
-import constants from "../../constants";
 import { Reference } from "../../model/reference.model";
 import { encode } from "html-entities";
+import { CITATION_POPUP_ID } from "../../constants";
 const fs = joplin.require("fs-extra");
 
 let popupHandle: string = "";
@@ -15,7 +15,7 @@ export async function showCitationPopup () {
 
     // If the dialog was not initialized, create it and get its handle
     if (popupHandle === "") {
-        popupHandle = await joplin.views.dialogs.create(constants.CITATION_POPUP_ID);
+        popupHandle = await joplin.views.dialogs.create(CITATION_POPUP_ID);
     }
 
     let html: string = await fs.readFile(

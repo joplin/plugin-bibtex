@@ -1,6 +1,10 @@
 import joplin from 'api';
 import { SettingItem } from 'api/types';
-import constants from '../constants';
+import {
+	SETTINGS_SECTION_ID,
+	PLUGIN_ICON,
+	SETTINGS_FILE_PATH_ID
+} from '../constants';
 
 /**
  * Initialize all the necessary components in the config screen
@@ -8,17 +12,17 @@ import constants from '../constants';
 export async function initConfigScreen (): Promise<void> {
 
     	// Register the config screen page
-		await joplin.settings.registerSection(constants.SETTINGS_SECTION_ID, {
+		await joplin.settings.registerSection(SETTINGS_SECTION_ID, {
 			name: "bibtex",
 			label: "BibTeX Plugin",
 			description: "Use locally stored BibTeX files to include citations in Joplin notes",
-			iconName: constants.PLUGIN_ICON
+			iconName: PLUGIN_ICON
 		});
 
 		// Bibtex file path
 		
 		const options: Record<string, SettingItem> = {};
-		options[constants.SETTINGS_FILE_PATH_ID] = {
+		options[SETTINGS_FILE_PATH_ID] = {
 			value: "",
 			type: 2,
 			section: 'bibtex.settings',
