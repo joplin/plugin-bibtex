@@ -16,7 +16,7 @@ export async function initConfigScreen (): Promise<void> {
 
 		// Bibtex file path
 		const options = {};
-		options[constants.SETTINGS_SECTION_ID] = {
+		options[constants.SETTINGS_FILE_PATH_ID] = {
 			value: "",
 			type: 2,
 			section: 'bibtex.settings',
