@@ -1,4 +1,5 @@
 import joplin from 'api';
+import { SettingItem } from 'api/types';
 import constants from '../constants';
 
 /**
@@ -15,7 +16,8 @@ export async function initConfigScreen (): Promise<void> {
 		});
 
 		// Bibtex file path
-		const options = {};
+		
+		const options: Record<string, SettingItem> = {};
 		options[constants.SETTINGS_FILE_PATH_ID] = {
 			value: "",
 			type: 2,
