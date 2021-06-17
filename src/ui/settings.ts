@@ -1,4 +1,10 @@
 import joplin from 'api';
+import { SettingItem } from 'api/types';
+import {
+	SETTINGS_SECTION_ID,
+	PLUGIN_ICON,
+	SETTINGS_FILE_PATH_ID
+} from '../constants';
 
 /**
  * Initialize all the necessary components in the config screen
@@ -6,21 +12,22 @@ import joplin from 'api';
 export async function initConfigScreen (): Promise<void> {
 
     	// Register the config screen page
-		await joplin.settings.registerSection("bibtex.settings", {
+		await joplin.settings.registerSection(SETTINGS_SECTION_ID, {
 			name: "bibtex",
 			label: "BibTeX Plugin",
 			description: "Use locally stored BibTeX files to include citations in Joplin notes",
-			iconName: "fa fa-graduation-cap"
+			iconName: PLUGIN_ICON
 		});
 
 		// Bibtex file path
-		await joplin.settings.registerSettings({
-			"bibtex.file": {
-				value: "",
-				type: 2,
-				section: 'bibtex.settings',
-				public: true,
-				label: 'BibTeX File',
-			}
-		});
+		
+		const options: Record<string, SettingItem> = {};
+		options[SETTINGS_FILE_PATH_ID] = {
+			value: "",
+			type: 2,
+			section: 'bibtex.settings',
+			public: true,
+			label: 'BibTeX File',
+		};
+		await joplin.settings.registerSettings(options);
 }
