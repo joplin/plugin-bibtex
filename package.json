@@ -29,9 +29,10 @@
     "yargs": "^16.2.0"
   },
   "dependencies": {
-    "citation-js": "^0.5.1"
+    "citation-js": "^0.5.1",
+    "html-entities": "^2.3.2"
   },
-  "browser":{
+  "browser": {
     "child_process": false
-  } 
+  }
 }

@@ -2,6 +2,7 @@ import joplin from "api";
 import { DataStore } from "../../data/data-store";
 import constants from "../../constants";
 import { Reference } from "../../model/reference.model";
+import { encode } from "html-entities";
 const fs = joplin.require("fs-extra");
 
 let popupHandle: string = "";
@@ -33,7 +34,7 @@ function fromRefsToHTML (refs: Reference[]): string {
     const ans: string = (
         `<ul>` +
             refs
-                .map(ref => `<li>${ref.title}</li>`)
+                .map(ref => `<li>${ encode(ref.title) }</li>`)
                 .reduce((acc, curr) => acc + curr) +
         `</ul>`
     );
