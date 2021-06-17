@@ -18,19 +18,15 @@ export async function registerAddBibTexReferenceCommand () {
         iconName: constants.PLUGIN_ICON,
         execute: async () => {
 
-            // Get file Path and check for errors
+            // Get file Path and read the contents of the file
             const filePath: string = await joplin.settings.value(constants.SETTINGS_FILE_PATH_ID);
-            if (!isFileExisting(filePath)) {
-                await showMessageBox(constants.ERROR_FILE_NOT_FOUND);
+            let fileContent: string;
+            try {
+                fileContent = await fs.readFile(filePath, "utf8");
+            } catch (e) {
+                await showMessageBox(`Error: Could not open file ${filePath}: ${e.message}`)
                 return;
             }
-            if (!isFileReadable(filePath)) {
-                await showMessageBox(constants.ERROR_PERMISSION_DENIED);
-                return;
-            }            
-
-            // Import bibtex raw data
-            const fileContent: string = await fs.readFile(filePath, "utf8");            
 
             try {
 
@@ -48,18 +44,4 @@ export async function registerAddBibTexReferenceCommand () {
 
         }
     });
-}
-
-function isFileExisting (file: string): boolean {
-    try {
-        fs.accessSync(file, fs.constants.F_OK);
-        return true;
-    } catch (e) { return false; }
-}
-
-function isFileReadable (file: string): boolean {
-    try {
-        fs.accessSync(file, fs.constants.R_OK);
-        return true;
-    } catch (e) { return false; }
 }
