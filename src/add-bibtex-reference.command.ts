@@ -52,7 +52,7 @@ export async function registerAddBibTexReferenceCommand () {
 
 function isFileExisting (file: string): boolean {
     try {
-        fs.accessSync(file, fs.constants.F_OK | fs.constants.R_OK);
+        fs.accessSync(file, fs.constants.F_OK);
         return true;
     } catch (e) { return false; }
 }
