@@ -30,6 +30,17 @@ export class DataStore {
     }
 
     /**
+     * Gets a single reference using its id
+     */
+    public static getReferenceById (id: string): Reference {
+        const n = this.references.length;
+        for (let i = 0; i < n; i++) {
+            if (this.references[i].id === id) return this.references[i];
+        }
+        throw new Error("Reference not found");
+    }
+
+    /**
      * Given a search query, returns an array of reference objects that matches the query
      * Currently tests whether or not the "title" field is compatible with the query or not
      * Compatible means that the search query is an exact substring of the "title" field, which will be improved later
