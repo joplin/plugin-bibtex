@@ -1,7 +1,7 @@
 import joplin from "api";
 import { DataStore } from "../../data/data-store";
 import { Reference } from "../../model/reference.model";
-import { encode } from "html-entities";
+import { encode, decode } from "html-entities";
 import { CITATION_POPUP_ID } from "../../constants";
 const fs = joplin.require("fs-extra");
 
@@ -32,7 +32,12 @@ export async function showCitationPopup () {
     await joplin.views.dialogs.addScript(popupHandle, "./ui/citation-popup/view.js");
 
     const result = await joplin.views.dialogs.open(popupHandle);
-    console.log(result.formData["main"]);
+
+    if (result.id === "no") return;
+    if (result.formData["main"]["reference_id"] === "") return;
+
+    const referenceId = decode(result.formData["main"]["reference_id"]);
+    console.log(referenceId);
 }
 
 function fromRefsToHTML (refs: Reference[]): string {
