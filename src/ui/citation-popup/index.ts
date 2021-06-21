@@ -10,8 +10,9 @@ let popupHandle: string = "";
 /**
  * Show a dialog for the user to choose from a list of references
  * to be inserted in the note content
+ * @returns ID of the selected reference
  */
-export async function showCitationPopup () {
+export async function showCitationPopup (): Promise<string> {
 
     // If the dialog was not initialized, create it and get its handle
     if (popupHandle === "") {
@@ -36,8 +37,8 @@ export async function showCitationPopup () {
     if (result.id === "no") return;
     if (result.formData["main"]["reference_id"] === "") return;
 
-    const referenceId = decode(result.formData["main"]["reference_id"]);
-    console.log(referenceId);
+    // Insert the selected reference into the note content
+    return decode(result.formData["main"]["reference_id"]);
 }
 
 function fromRefsToHTML (refs: Reference[]): string {
