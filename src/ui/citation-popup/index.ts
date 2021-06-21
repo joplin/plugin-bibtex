@@ -28,6 +28,7 @@ export async function showCitationPopup () {
     html = html.replace("<!-- content -->", fromRefsToHTML(refs));
 
     await joplin.views.dialogs.setHtml(popupHandle, html);
+    await joplin.views.dialogs.addScript(popupHandle, "./ui/citation-popup/view.css");
     await joplin.views.dialogs.addScript(popupHandle, "./ui/citation-popup/view.js");
 
     const result = await joplin.views.dialogs.open(popupHandle);

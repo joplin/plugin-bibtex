@@ -2,8 +2,6 @@
 let referenceIdInput = document.getElementById("reference_id");
 let refs = document.getElementsByTagName("li");
 
-console.log(refs);
-
 /* Event Listeners */
 
 // When selecting a certain reference, set the "reference_id" field accordingly
@@ -19,7 +17,6 @@ for (let i = 0; i < refs.length; i++) {
         }
 
         selectedReferenceView = event.target;
-        console.log(event.target);
         selectedReferenceView.className = "selected";
     });
 }
