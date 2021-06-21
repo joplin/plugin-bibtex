@@ -18,13 +18,22 @@
         li {
             padding: 10px;
             cursor: pointer;
-        } li:hover { background-color: rgba(0, 0, 0, 0.1); }
+        } li:hover { background-color: rgba(0, 0, 0, 0.3); }
+
+        .selected {
+            background-color: rgba(0, 0, 0, 0.2);
+        }
 
     </style>
 </head>
 <body>
-    
+
     <!-- content -->
+
+    <!-- Hidden input element to store the chosen reference -->
+    <form name="main">
+        <input type="hidden" id="reference_id" name="reference_id" value="">
+    </form>
 
 </body>
 </html>

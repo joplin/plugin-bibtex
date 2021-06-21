@@ -18,8 +18,9 @@ export async function showCitationPopup () {
         popupHandle = await joplin.views.dialogs.create(CITATION_POPUP_ID);
     }
 
+    const installationDir = await joplin.plugins.installationDir();
     let html: string = await fs.readFile(
-        await joplin.plugins.installationDir() + "/ui/citation-popup/view.html",
+        installationDir + "/ui/citation-popup/view.html",
         'utf8'
     );
 
@@ -27,17 +28,23 @@ export async function showCitationPopup () {
     html = html.replace("<!-- content -->", fromRefsToHTML(refs));
 
     await joplin.views.dialogs.setHtml(popupHandle, html);
-    await joplin.views.dialogs.open(popupHandle);
+    await joplin.views.dialogs.addScript(popupHandle, "./ui/citation-popup/view.js");
+
+    const result = await joplin.views.dialogs.open(popupHandle);
+    console.log(result.formData["main"]);
 }
 
 function fromRefsToHTML (refs: Reference[]): string {
     const ans: string = (
         `<ul>` +
             refs
-                .map(ref => `<li>${ encode(ref.title) }</li>`)
+                .map(ref => `
+                    <li id="${ encode(ref.id) }">
+                        ${ encode(ref.title) }
+                    </li>
+                `)
                 .reduce((acc, curr) => acc + curr) +
         `</ul>`
     );
-    console.log(ans);
     return ans;
 }
