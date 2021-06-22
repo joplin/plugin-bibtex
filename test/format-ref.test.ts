@@ -31,7 +31,7 @@ describe("Format Reference Util", () => {
 
         const result = formatReference(data[2]);
         
-        expect(result).toBe("[@Smith2005](https://scholar.google.com/scholar?q=MedTag:+A+Collection+of+Biomedical+Annotations,+Smith)");
+        expect(result).toBe("[@Smith2005](https://scholar.google.com/scholar?q=MedTag:%20A%20Collection%20of%20Biomedical%20Annotations,%20Smith)");
     });
 
 });

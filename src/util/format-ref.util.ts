@@ -1,12 +1,13 @@
 import { Reference } from "../model/reference.model";
 import { getDate } from "./get-date.util";
+import { escapeTitleText, escapeLinkUrl } from "./markdown.util";
 
 /**
  * Format a given reference as a valid markdown url
  */
 export function formatReference (ref: Reference): string {
-    const displayText: string = getDisplayText(ref);
-    const link: string = getLink(ref);
+    const displayText: string = escapeTitleText(getDisplayText(ref));
+    const link: string = escapeLinkUrl(getLink(ref));
     return `[@${displayText}](${link})`;
 }
 
@@ -32,7 +33,7 @@ function getDisplayText (ref: Reference): string {
 function getLink (ref: Reference): string {
     let url: string = "";
     if (ref.DOI && ref.DOI !== "") {
-        url = `http://dx.doi.org/${ref.DOI}`;
+        url = `http://dx.doi.org/${ encodeURI(ref.DOI) }`;
     } else if (ref.URL && ref.URL !== "") {
         url = ref.URL;
     } else {
