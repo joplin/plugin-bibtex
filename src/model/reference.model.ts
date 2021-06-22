@@ -3,7 +3,7 @@ import { Author } from "./author.model";
 export interface Reference {
     id: string,
     title: string,
-    author: Author[],
+    author?: Author[],
     type: string,
     DOI?: string,
     URL?: string,
@@ -13,5 +13,5 @@ export interface Reference {
     volume?: string,
     issue?: string,
     page?: string,
-    issued: { "date-parts": number[][] },
+    issued?: { "date-parts": number[][] },
 }
