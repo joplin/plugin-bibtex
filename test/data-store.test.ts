@@ -26,9 +26,9 @@ describe("Data Store", () => {
         DataStore.setReferences(data);
 
         const refId = DataStore.getAllReferences()[0].id;
-        const res: Reference = DataStore.getReferenceById(refId);
+        const ref: Reference = DataStore.getReferenceById(refId);
 
-        expect(res).toEqual(DataStore.getAllReferences()[0]);
+        expect(ref).toEqual(DataStore.getAllReferences()[0]);
     });
 
     it("getReferenceById() throws error when the reference is not found", async () => {
