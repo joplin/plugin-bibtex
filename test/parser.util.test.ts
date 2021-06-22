@@ -1,14 +1,17 @@
 import { parse } from "../src/util/parser.util";
 import { getDate } from "../src/util/get-date.util";
 import { Reference } from "../src/model/reference.model";
-import { readFileSync, writeFileSync } from "fs";
+import { promises as fs } from "fs";
 import { join } from "path";
 
 describe("Parser", () => {
 
-    it("Correct Parsing", () => {
-        const raw = readFileSync(join(__dirname, "assets", "test.bib"), "utf-8");
+    it("Correct Parsing", async () => {
+        const raw: string = await fs.readFile(join(__dirname, "assets", "test.bib"), "utf-8");
+        
         const result: Reference[] = parse(raw);
+
+        await fs.writeFile(join(__dirname, "assets", "test.json"), JSON.stringify(result));
 
         // Validation
         expect(result).toBeInstanceOf(Array);             // The result is an array of reference objects

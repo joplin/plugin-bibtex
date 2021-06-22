@@ -2,6 +2,7 @@ import joplin from "api";
 import { showCitationPopup } from './ui/citation-popup';
 import { Reference } from "./model/reference.model";
 import { parse } from "./util/parser.util";
+import { formatReference } from "./util/format-ref.util";
 import { DataStore } from "./data/data-store";
 import {
     ADD_BIBTEX_REFERENCE_COMMAND,
@@ -39,8 +40,18 @@ export async function registerAddBibTexReferenceCommand () {
                 const refs: Reference[] = parse(fileContent);
                 DataStore.setReferences(refs);
 
-                // Show the citation popup
-                await showCitationPopup();
+                // Show the citation popup and get the id of the selected reference
+                const referenceId: string = await showCitationPopup();
+
+                // Insert the selected reference into the note content
+                const selectedReference = DataStore.getReferenceById(referenceId);
+                await joplin.commands.execute(
+                    "insertText",
+                    formatReference(selectedReference)
+                );
+            
+                // Return the focus to the note editor
+                await joplin.commands.execute("focusElement", "noteBody");
 
             } catch (e) {
                 console.log(e.message);
