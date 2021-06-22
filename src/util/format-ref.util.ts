@@ -33,12 +33,14 @@ function getDisplayText (ref: Reference): string {
 function getLink (ref: Reference): string {
     let url: string = "";
     if (ref.DOI && ref.DOI !== "") {
-        url = `http://dx.doi.org/${ encodeURI(ref.DOI) }`;
+        url = `http://dx.doi.org/${ encodeURIComponent(ref.DOI) }`;
     } else if (ref.URL && ref.URL !== "") {
         url = ref.URL;
     } else {
-        url = `https://scholar.google.com/scholar?q=${ref.title}`;
-        if (getAuthor(ref) !== "") url += `, ${getAuthor(ref)}`;
+        let query: string = ref.title;
+        if (getAuthor(ref) !== "") query += `, ${getAuthor(ref)}`;
+        url = `https://scholar.google.com/scholar?q=${ encodeURIComponent(query) }`;
+        
     }
     return url;
 
