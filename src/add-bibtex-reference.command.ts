@@ -12,8 +12,6 @@ import {
 } from "./constants";
 const fs = joplin.require("fs-extra");
 
-const showMessageBox = joplin.views.dialogs.showMessageBox;
-
 /**
  * Register the main command of the plugin
  */
@@ -30,7 +28,9 @@ export async function registerAddBibTexReferenceCommand () {
             try {
                 fileContent = await fs.readFile(filePath, "utf8");
             } catch (e) {
-                await showMessageBox(`Error: Could not open file ${filePath}: ${e.message}`)
+                await joplin.views.dialogs.showMessageBox(
+                    `Error: Could not open file ${filePath}: ${e.message}`
+                );
                 return;
             }
 
@@ -55,7 +55,9 @@ export async function registerAddBibTexReferenceCommand () {
 
             } catch (e) {
                 console.log(e.message);
-                await showMessageBox(ERROR_PARSING_FAILED);
+                await joplin.views.dialogs.showMessageBox(
+                    ERROR_PARSING_FAILED + e.message
+                );
             }
 
         }
