@@ -56,7 +56,7 @@ export async function registerAddBibTexReferenceCommand () {
             } catch (e) {
                 console.log(e.message);
                 await joplin.views.dialogs.showMessageBox(
-                    ERROR_PARSING_FAILED + e.message
+                    `${ERROR_PARSING_FAILED} \n\n ${e.message}`
                 );
             }
 
