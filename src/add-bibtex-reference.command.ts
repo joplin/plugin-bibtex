@@ -43,6 +43,9 @@ export async function registerAddBibTexReferenceCommand () {
                 // Show the citation popup and get the id of the selected reference
                 const referenceId: string = await showCitationPopup();
 
+                // If no reference was selected, exit the command
+                if (referenceId === "") return;
+
                 // Insert the selected reference into the note content
                 const selectedReference = DataStore.getReferenceById(referenceId);
                 await joplin.commands.execute(
@@ -56,7 +59,7 @@ export async function registerAddBibTexReferenceCommand () {
             } catch (e) {
                 console.log(e.message);
                 await joplin.views.dialogs.showMessageBox(
-                    `${ERROR_PARSING_FAILED} \n\n ${e.message}`
+                    `${ERROR_PARSING_FAILED}\n\n${e.message}`
                 );
             }
 
