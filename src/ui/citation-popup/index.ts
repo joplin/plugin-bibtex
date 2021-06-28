@@ -34,8 +34,8 @@ export async function showCitationPopup (): Promise<string> {
 
     const result = await joplin.views.dialogs.open(popupHandle);
 
-    if (result.id === "no") return;
-    if (result.formData["main"]["reference_id"] === "") return;
+    if (result.id === "no") return "";
+    if (result.formData["main"]["reference_id"] === "") return "";
 
     // Insert the selected reference into the note content
     return decode(result.formData["main"]["reference_id"]);
