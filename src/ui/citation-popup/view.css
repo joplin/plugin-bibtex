@@ -1,11 +1,13 @@
-* { overflow-wrap: break-word; }
-        
-body { width: 600px; }
+* {
+    overflow-wrap: break-word;
+    box-sizing: border-box;
+}
 
-ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+#joplin-plugin-content {
+    width: 900px;
+    height: auto;
+    max-height: 500px;
+    overflow-y: auto;
 }
 
 li {
