@@ -3,7 +3,8 @@ const output = document.getElementById("main");
 
 const refs = JSON.parse(inputRefsView.textContent);
 
-// The autoComplete.js Engine instance creator
+configAutoComplete();
+
 
 function configAutoComplete () {
 
@@ -48,7 +49,7 @@ function configAutoComplete () {
             }
         }
     });
-    autoCompleteJS.searchEngine = "strict";
+    autoCompleteJS.searchEngine = "loose";
 
     autoCompleteJS.input.addEventListener("selection", event => {
         const feedback = event.detail;
