@@ -46,6 +46,7 @@ function fromRefsToHTML (refs: Reference[]): string {
             JSON.stringify(
                 refs.map(ref => {
                     return {
+                        id: encode(ref.id),
                         title: encode(ref.title),
                         author: ref.author.map(auth => {
                                     return {
@@ -53,7 +54,7 @@ function fromRefsToHTML (refs: Reference[]): string {
                                         family: encode(auth.family)
                                     };
                                 }),
-                        year: (ref.issued) ? getDate(ref).getFullYear : null
+                        year: (ref.issued) ? getDate(ref).getFullYear() : null
                     };
                 })
              ) +
