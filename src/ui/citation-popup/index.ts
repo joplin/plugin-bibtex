@@ -1,5 +1,6 @@
 import joplin from "api";
 import { Reference } from "../../model/reference.model";
+import { getDate } from "../../util/get-date.util";
 import { encode, decode } from "html-entities";
 import { CITATION_POPUP_ID } from "../../constants";
 const fs = joplin.require("fs-extra");
@@ -41,15 +42,22 @@ export async function showCitationPopup (refs: Reference[]): Promise<string> {
 
 function fromRefsToHTML (refs: Reference[]): string {
     const ans: string = (
-        `<ul>` +
-            refs
-                .map(ref => `
-                    <li id="${ encode(ref.id) }">
-                        ${ encode(ref.title) }
-                    </li>
-                `)
-                .reduce((acc, curr) => acc + curr) +
-        `</ul>`
+        '<div id="json" style="display:none;">' +
+            JSON.stringify(
+                refs.map(ref => {
+                    return {
+                        title: encode(ref.title),
+                        author: ref.author.map(auth => {
+                                    return {
+                                        given: encode(auth.given),
+                                        family: encode(auth.family)
+                                    };
+                                }),
+                        year: (ref.issued) ? getDate(ref).getFullYear : null
+                    };
+                })
+             ) +
+        '</div>'
     );
     return ans;
 }
