@@ -1,5 +1,4 @@
 import joplin from "api";
-import { DataStore } from "../../data/data-store";
 import { Reference } from "../../model/reference.model";
 import { encode, decode } from "html-entities";
 import { CITATION_POPUP_ID } from "../../constants";
@@ -12,7 +11,7 @@ let popupHandle: string = "";
  * to be inserted in the note content
  * @returns ID of the selected reference
  */
-export async function showCitationPopup (): Promise<string> {
+export async function showCitationPopup (refs: Reference[]): Promise<string> {
 
     // If the dialog was not initialized, create it and get its handle
     if (popupHandle === "") {
@@ -25,7 +24,6 @@ export async function showCitationPopup (): Promise<string> {
         'utf8'
     );
 
-    const refs: Reference[] = DataStore.getAllReferences();
     html = html.replace("<!-- content -->", fromRefsToHTML(refs));
 
     await joplin.views.dialogs.setHtml(popupHandle, html);

@@ -41,7 +41,7 @@ export async function registerAddBibTexReferenceCommand () {
                 DataStore.setReferences(refs);
 
                 // Show the citation popup and get the id of the selected reference
-                const referenceId: string = await showCitationPopup();
+                const referenceId: string = await showCitationPopup(refs);
 
                 // If no reference was selected, exit the command
                 if (referenceId === "") return;
