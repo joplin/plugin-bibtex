@@ -1,5 +1,6 @@
 const inputRefsView = document.getElementById("json");
 const selectedRefsView = document.getElementById("selected_refs_list");
+const output = document.getElementById("output");
 
 const refs = JSON.parse(inputRefsView.textContent);
 const refsMap = new Map();
@@ -10,7 +11,6 @@ configAutoComplete();
 
 selectedRefsView.addEventListener("click", event => {
     if (event.target.classList.contains("icon_remove")) {
-        console.log(event.target);
         removeReference(event.target.parentNode.id);
     }
 });
@@ -73,6 +73,9 @@ function addReference (refId = "") {
             <span class="icon_remove">x</span>
         </li>
     `;
+    output.value = JSON.stringify(
+        Array.from(selectedRefs)
+    );
 }
 
 function removeReference (refId = "") {
@@ -81,4 +84,7 @@ function removeReference (refId = "") {
     if (selectedRefs.size === 0) {
         selectedRefsView.textContent = "Select some references to be added to the current note";
     }
+    output.value = JSON.stringify(
+        Array.from(selectedRefs)
+    );
 }

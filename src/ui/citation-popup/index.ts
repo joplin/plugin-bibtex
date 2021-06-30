@@ -12,7 +12,7 @@ let popupHandle: string = "";
  * to be inserted in the note content
  * @returns ID of the selected reference
  */
-export async function showCitationPopup (refs: Reference[]): Promise<string> {
+export async function showCitationPopup (refs: Reference[]): Promise<string[]> {
 
     // If the dialog was not initialized, create it and get its handle
     if (popupHandle === "") {
@@ -34,12 +34,14 @@ export async function showCitationPopup (refs: Reference[]): Promise<string> {
     await joplin.views.dialogs.addScript(popupHandle, "./ui/citation-popup/view.js");
 
     const result = await joplin.views.dialogs.open(popupHandle);
+    
+    if (result.id === "cancel") return [];
 
-    if (result.id === "no") return "";
-    if (result.formData["main"]["reference_id"] === "") return "";
+    let selectedRefsIDs: string[] = JSON.parse(result.formData["main"]["output"]);
+    selectedRefsIDs = selectedRefsIDs.map(refId => decode(refId));
 
-    // Insert the selected reference into the note content
-    return decode(result.formData["main"]["reference_id"]);
+    /* Return an array of selected references' IDS */
+    return selectedRefsIDs;
 }
 
 function fromRefsToHTML (refs: Reference[]): string {
