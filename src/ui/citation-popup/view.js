@@ -57,7 +57,7 @@ function addReference (refId = "") {
     if (selectedRefs.size === 0) selectedRefsView.textContent = "";
     selectedRefs.add(refId);
     selectedRefsView.innerHTML += `
-        <li>
+        <li id="${refId}">
             <span class="title">${refsMap.get(refId)["title"]}</span>
             <span class="icon_remove">x</span>
         </li>
