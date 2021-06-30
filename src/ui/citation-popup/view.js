@@ -8,6 +8,13 @@ const selectedRefs = new Set();
 
 configAutoComplete();
 
+selectedRefsView.addEventListener("click", event => {
+    if (event.target.classList.contains("icon_remove")) {
+        console.log(event.target);
+        removeReference(event.target.parentNode.id);
+    }
+});
+
 function configAutoComplete () {
 
     const autoCompleteJS = new autoComplete({
@@ -53,8 +60,9 @@ function configAutoComplete () {
 }
 
 function addReference (refId = "") {
-    console.log(refId);
-    if (selectedRefs.size === 0) selectedRefsView.textContent = "";
+    if (selectedRefs.size === 0) {
+        selectedRefsView.textContent = "";
+    }
     selectedRefs.add(refId);
     selectedRefsView.innerHTML += `
         <li id="${refId}">
@@ -62,4 +70,12 @@ function addReference (refId = "") {
             <span class="icon_remove">x</span>
         </li>
     `;
+}
+
+function removeReference (refId = "") {
+    selectedRefs.delete(refId);
+    document.getElementById(refId).remove();
+    if (selectedRefs.size === 0) {
+        selectedRefsView.textContent = "Select some references to be added to the current note";
+    }
 }
