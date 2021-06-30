@@ -1,15 +1,17 @@
 const inputRefsView = document.getElementById("json");
-const output = document.getElementById("main");
+const selectedRefsView = document.getElementById("selected_refs_list");
 
 const refs = JSON.parse(inputRefsView.textContent);
+const refsMap = new Map();
+refs.forEach(ref => { refsMap.set(ref["id"], ref); });
+const selectedRefs = new Set();
 
 configAutoComplete();
-
 
 function configAutoComplete () {
 
     const autoCompleteJS = new autoComplete({
-        placeHolder: "Search for references",
+        placeHolder: "Search for references...",
         data: {
             src: refs,
             keys: ["title"],
@@ -44,12 +46,20 @@ function configAutoComplete () {
 
     autoCompleteJS.input.addEventListener("selection", event => {
         const feedback = event.detail;
-        // Prepare User's Selected Value
-        const selection = feedback.selection.value[feedback.selection.key];
-        // Replace Input value with the selected value
-        autoCompleteJS.input.value = selection;
-        // Console log autoComplete data feedback
-        console.log(feedback);
+        const selection = feedback.selection.value;
+        addReference(selection["id"]);
     });
 
+}
+
+function addReference (refId = "") {
+    console.log(refId);
+    if (selectedRefs.size === 0) selectedRefsView.textContent = "";
+    selectedRefs.add(refId);
+    selectedRefsView.innerHTML += `
+        <li>
+            <span class="title">${refsMap.get(refId)["title"]}</span>
+            <span class="icon_remove">x</span>
+        </li>
+    `;
 }
