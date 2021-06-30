@@ -22,6 +22,9 @@ function configAutoComplete () {
         data: {
             src: refs,
             keys: ["title"],
+            filter: list => {
+                return list.filter(item => !selectedRefs.has(item.value["id"]));
+            }
         },
         resultsList: {
             noResults: true,
