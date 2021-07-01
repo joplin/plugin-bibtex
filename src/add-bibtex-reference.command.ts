@@ -58,7 +58,7 @@ export async function registerAddBibTexReferenceCommand () {
                 await joplin.commands.execute("focusElement", "noteBody");
 
             } catch (e) {
-                console.log(e.message);
+                console.log(e);
                 await joplin.views.dialogs.showMessageBox(
                     `${ERROR_PARSING_FAILED}\n\n${e.message}`
                 );
