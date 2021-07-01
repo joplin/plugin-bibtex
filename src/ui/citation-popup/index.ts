@@ -54,7 +54,7 @@ function fromRefsToHTML (refs: Reference[]): string {
                             id: ref.id,
                             title: ref.title,
                             author: ref.author,
-                            year: (ref.issued) ? getDate(ref).getFullYear() : null
+                            year: (ref.issued && ref.issued["date-parts"]) ? getDate(ref).getFullYear() : null
                         };
                     })
                 )
