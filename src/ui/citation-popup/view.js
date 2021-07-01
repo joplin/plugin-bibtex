@@ -1,14 +1,19 @@
+/* UI Elements */
 const inputRefsView = document.getElementById("json");
 const selectedRefsView = document.getElementById("selected_refs_list");
 const output = document.getElementById("output");
 
+/* State */
 const refs = JSON.parse(inputRefsView.textContent);
 const refsMap = new Map();
-refs.forEach(ref => { refsMap.set(ref["id"], ref); });
-const selectedRefs = new Set();
+refs.forEach(ref => refsMap.set(ref["id"], ref));
+const state = {
+    selectedRefs: new Set()
+};
 
 configAutoComplete();
 
+/* Event Listeners */
 selectedRefsView.addEventListener("click", event => {
     if (event.target.classList.contains("icon_remove")) {
         removeReference(event.target.parentNode.id);
@@ -23,7 +28,7 @@ function configAutoComplete () {
             src: refs,
             keys: ["title"],
             filter: list => {
-                return list.filter(item => !selectedRefs.has(item.value["id"]));
+                return list.filter(item => !state.selectedRefs.has(item.value["id"]));
             }
         },
         resultsList: {
@@ -63,28 +68,40 @@ function configAutoComplete () {
 }
 
 function addReference (refId = "") {
-    if (selectedRefs.size === 0) {
-        selectedRefsView.textContent = "";
-    }
-    selectedRefs.add(refId);
-    selectedRefsView.innerHTML += `
-        <li id="${refId}">
-            <span class="title">${refsMap.get(refId)["title"]}</span>
-            <span class="icon_remove">x</span>
-        </li>
-    `;
-    output.value = JSON.stringify(
-        Array.from(selectedRefs)
-    );
+    state.selectedRefs.add(refId);
+    render();
 }
 
 function removeReference (refId = "") {
-    selectedRefs.delete(refId);
-    document.getElementById(refId).remove();
-    if (selectedRefs.size === 0) {
-        selectedRefsView.textContent = "Select some references to be added to the current note";
+    state.selectedRefs.delete(refId);
+    render();
+}
+
+/* Rendering state-based UI */
+function render () {
+    const selectedRefsArray = Array.from(state.selectedRefs);
+    selectedRefsView.innerHTML = template(selectedRefsArray);
+    output.value = JSON.stringify(selectedRefsArray);
+}
+
+/**
+ * Returns an HTML representation of an array of refs
+ * @param {Reference[]} refs
+ * @returns string
+ */
+function template (refs = []) {
+    if (refs.length === 0) {
+        return "Select some references to be added to the current note";
     }
-    output.value = JSON.stringify(
-        Array.from(selectedRefs)
+    return (
+        refs
+            .map(refId => refsMap.get(refId))           // id => reference
+            .map(ref => (`
+                <li id="${ref["id"]}">
+                    <span class="title">${ref["title"]}</span>
+                    <span class="icon_remove">x</span>
+                </li>
+            `))                                         // reference => <li>
+            .join(" ")
     );
 }
