@@ -47,21 +47,18 @@ export async function showCitationPopup (refs: Reference[]): Promise<string[]> {
 function fromRefsToHTML (refs: Reference[]): string {
     const ans: string = (
         '<div id="json" style="display:none;">' +
-            JSON.stringify(
-                refs.map(ref => {
-                    return {
-                        id: encode(ref.id),
-                        title: encode(ref.title),
-                        author: ref.author.map(auth => {
-                                    return {
-                                        given: encode(auth.given),
-                                        family: encode(auth.family)
-                                    };
-                                }),
-                        year: (ref.issued) ? getDate(ref).getFullYear() : null
-                    };
-                })
-             ) +
+            encode(
+                JSON.stringify(
+                    refs.map(ref => {
+                        return {
+                            id: ref.id,
+                            title: ref.title,
+                            author: ref.author,
+                            year: (ref.issued) ? getDate(ref).getFullYear() : null
+                        };
+                    })
+                )
+            ) +
         '</div>'
     );
     return ans;
