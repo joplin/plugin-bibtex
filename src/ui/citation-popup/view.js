@@ -5,8 +5,8 @@ const output = document.getElementById("output");
 
 /* State */
 const refs = JSON.parse(inputRefsView.textContent);
-const refsMap = new Map();
-refs.forEach(ref => refsMap.set(ref["id"], ref));
+const invertedRefsIndex = {};
+refs.forEach(ref => invertedRefsIndex[ ref["id"] ] = ref);
 const state = {
     selectedRefs: new Set()
 };
@@ -95,7 +95,7 @@ function template (refs = []) {
     }
     return (
         refs
-            .map(refId => refsMap.get(refId))           // id => reference
+            .map(refId => invertedRefsIndex[refId])           // id => reference
             .map(ref => (`
                 <li id="${ref["id"]}">
                     <span class="title">${ref["title"]}</span>
