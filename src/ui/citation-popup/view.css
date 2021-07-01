@@ -43,6 +43,7 @@ main {
   height: 30px;
   line-height: 30px;
   text-align: center;
+  user-select: none;
 } #selected_refs_list .icon_remove:hover {
   background-color: rgba(0, 0, 0, 0.2);
 }
