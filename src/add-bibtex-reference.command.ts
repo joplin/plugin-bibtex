@@ -47,13 +47,12 @@ export async function registerAddBibTexReferenceCommand () {
                 if (selectedRefsIDs.length === 0) return;
 
                 // Insert the selected references into the note content
-                for (let i = 0; i < selectedRefsIDs.length; i++) {
-                    const selectedReference = DataStore.getReferenceById(selectedRefsIDs[i]);
-                    await joplin.commands.execute(
-                        "insertText",
-                        formatReference(selectedReference)
-                    );
-                }
+                const toBeInsertedText = selectedRefsIDs
+                    .map(refId => DataStore.getReferenceById(refId))
+                    .map(ref => formatReference(ref))
+                    .reduce((acc, curr) => acc + " " + curr);
+                
+                await joplin.commands.execute("insertText", toBeInsertedText);
 
                 // Return the focus to the note editor
                 await joplin.commands.execute("focusElement", "noteBody");
