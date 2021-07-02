@@ -16,10 +16,8 @@ const output = document.getElementById("output");
 function main () {
 
     /* State */
-    const refs = JSON.parse( he.decode(inputRefsView.textContent) );
-    const invertedRefsIndex = {};
-    refs.forEach(ref => invertedRefsIndex[ ref["id"] ] = ref);
     const state = {
+        refs: JSON.parse( he.decode(inputRefsView.textContent) ),
         selectedRefs: new Set()
     };
 
@@ -37,7 +35,7 @@ function main () {
         const autoCompleteJS = new autoComplete({
             placeHolder: "Search for references...",
             data: {
-                src: refs,
+                src: state.refs,
                 keys: ["title"],
                 filter: list => {
                     return list.filter(item => !state.selectedRefs.has(item.value["id"]));
@@ -111,7 +109,7 @@ function main () {
         }
         return (
             refs
-                .map(refId => invertedRefsIndex[refId])             // id => reference
+                .map(refId => state.refs.find(r => r["id"] === refId))             // id => reference
                 .map(ref => (`
                     <li id="${ he.encode(ref["id"]) }">
                         <span class="title">${ he.encode(ref["title"]) }</span>
