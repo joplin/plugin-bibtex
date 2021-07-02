@@ -1,7 +1,7 @@
 import joplin from "api";
 import { Reference } from "../../model/reference.model";
 import { getDate } from "../../util/get-date.util";
-import { encode, decode } from "html-entities";
+import { encode } from "html-entities";
 import { CITATION_POPUP_ID } from "../../constants";
 const fs = joplin.require("fs-extra");
 
@@ -28,9 +28,10 @@ export async function showCitationPopup (refs: Reference[]): Promise<string[]> {
     html = html.replace("<!-- content -->", fromRefsToHTML(refs));
 
     await joplin.views.dialogs.setHtml(popupHandle, html);
-    await joplin.views.dialogs.addScript(popupHandle, "./ui/citation-popup/autoComplete.min.css");
+    await joplin.views.dialogs.addScript(popupHandle, "./ui/citation-popup/lib/autoComplete.min.css");
+    await joplin.views.dialogs.addScript(popupHandle, "./ui/citation-popup/lib/autoComplete.min.js");
+    await joplin.views.dialogs.addScript(popupHandle, "./ui/citation-popup/lib/he.min.js");
     await joplin.views.dialogs.addScript(popupHandle, "./ui/citation-popup/view.css");
-    await joplin.views.dialogs.addScript(popupHandle, "./ui/citation-popup/autoComplete.min.js");
     await joplin.views.dialogs.addScript(popupHandle, "./ui/citation-popup/view.js");
 
     const result = await joplin.views.dialogs.open(popupHandle);
@@ -38,28 +39,26 @@ export async function showCitationPopup (refs: Reference[]): Promise<string[]> {
     if (result.id === "cancel") return [];
 
     let selectedRefsIDs: string[] = JSON.parse(result.formData["main"]["output"]);
-    selectedRefsIDs = selectedRefsIDs.map(refId => decode(refId));
 
     /* Return an array of selected references' IDS */
     return selectedRefsIDs;
 }
 
 function fromRefsToHTML (refs: Reference[]): string {
-    const ans: string = (
-        '<div id="json" style="display:none;">' +
-            encode(
-                JSON.stringify(
-                    refs.map(ref => {
-                        return {
-                            id: ref.id,
-                            title: ref.title,
-                            author: ref.author,
-                            year: (ref.issued && ref.issued["date-parts"]) ? getDate(ref).getFullYear() : null
-                        };
-                    })
-                )
-            ) +
-        '</div>'
+    const JSONString = JSON.stringify(
+        refs.map(ref => {
+            return {
+                id: ref.id,
+                title: ref.title,
+                author: ref.author,
+                year: (ref.issued && ref.issued["date-parts"]) ? getDate(ref).getFullYear() : null
+            };
+        })
     );
+    const ans: string = `
+        <div id="json" style="display:none;">
+            ${ encode(JSONString) }
+        </div>
+    `;
     return ans;
 }
