@@ -69,12 +69,16 @@ function main () {
                 }
             }
         });
-        autoCompleteJS.searchEngine = "loose";
+        autoCompleteJS.searchEngine = "strict";
 
         autoCompleteJS.input.addEventListener("selection", event => {
             const feedback = event.detail;
             const selection = feedback.selection.value;
             addReference(selection["id"]);
+
+            // Empty the contents of the text field
+            // after adding the reference to the selected area
+            autoCompleteJS.input.value = "";
         });
 
     }
