@@ -22,7 +22,7 @@ function main () {
 
     /* State */
     const state = {
-        refs: JSON.parse( he.decode(inputRefsView.textContent) ),
+        refs: JSON.parse( inputRefsView.textContent ),
         selectedRefs: new Set()
     };
 
