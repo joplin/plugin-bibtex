@@ -6,7 +6,12 @@ The quick and dirty way to solve this bug is to make sure the current script
 waits until all the other scripts get loaded by Joplin,
 and then starts doing its job
 */
-setTimeout(main, 5, 10);
+const intervalId = setInterval(() => {
+	if (typeof he !== 'undefined') {
+		clearInterval(intervalId);
+		main();
+	}
+}, 100);
 
 /* UI Elements */
 const inputRefsView = document.getElementById("json");
