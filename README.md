@@ -4,7 +4,7 @@
 Many users use Joplin for research purposes, so it is natural for them to do citations all the time. Accordingly, adding a feature that supports citations and BibTeX will be of great benefit to Joplin. And here it is :)
 - For more info: https://discourse.joplinapp.org/c/gsoc-projects/bibtex-plugin
 
-![BibTeX Plugin Demo](https://i.ibb.co/TWrHVqF/Peek-2021-06-21-22-09.gif)
+![BibTeX Plugin Demo](https://i.ibb.co/JyxhLzg/DEMO-FULL-PLUGIN.gif)
 
 ## Features
 - Read from a source of citations (a `.bib` file).
