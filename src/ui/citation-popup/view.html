@@ -1,17 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Citation Popup Dialog</title>
-</head>
-<body>
+<!-- content -->
 
-    <!-- content -->
+<main>
+    <input id="autoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" tabindex="1">
 
-    <!-- Hidden input element to store the chosen reference -->
-    <form name="main">
-        <input type="hidden" id="reference_id" name="reference_id" value="">
-    </form>
+    <ul id="selected_refs_list">
+        Select some references to be added to the current note
+        <!-- <li>
+            <span class="title">Hello World.</span>
+            <span class="icon_remove">x</span>
+        </li>
+        <li>
+            <span class="title">This is CS50. Harvard University's introduction to the intellectual enterprises of computer science and the art of programming.</span>
+            <span class="icon_remove">x</span>
+        </li> -->
+    </ul>
 
-</body>
-</html>
+</main>
+
+<!-- Hidden input element to store the chosen reference -->
+<form name="main">
+    <input type="hidden" id="output" name="output" value="[]">
+</form>

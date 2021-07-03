@@ -40,24 +40,25 @@ export async function registerAddBibTexReferenceCommand () {
                 const refs: Reference[] = parse(fileContent);
                 DataStore.setReferences(refs);
 
-                // Show the citation popup and get the id of the selected reference
-                const referenceId: string = await showCitationPopup();
+                // Show the citation popup and get the IDs of the selected references
+                const selectedRefsIDs: string[] = await showCitationPopup(refs);
 
                 // If no reference was selected, exit the command
-                if (referenceId === "") return;
+                if (selectedRefsIDs.length === 0) return;
 
-                // Insert the selected reference into the note content
-                const selectedReference = DataStore.getReferenceById(referenceId);
-                await joplin.commands.execute(
-                    "insertText",
-                    formatReference(selectedReference)
-                );
-            
+                // Insert the selected references into the note content
+                const toBeInsertedText = selectedRefsIDs
+                    .map(refId => DataStore.getReferenceById(refId))
+                    .map(ref => formatReference(ref))
+                    .reduce((acc, curr) => acc + " " + curr);
+                
+                await joplin.commands.execute("insertText", toBeInsertedText);
+
                 // Return the focus to the note editor
                 await joplin.commands.execute("focusElement", "noteBody");
 
             } catch (e) {
-                console.log(e.message);
+                console.log(e);
                 await joplin.views.dialogs.showMessageBox(
                     `${ERROR_PARSING_FAILED}\n\n${e.message}`
                 );
