@@ -74,6 +74,9 @@ function main () {
         });
         autoCompleteJS.searchEngine = "strict";
 
+        // Focus the input field
+        autoCompleteJS.input.focus();
+
         autoCompleteJS.input.addEventListener("selection", event => {
             const feedback = event.detail;
             const selection = feedback.selection.value;
