@@ -24,6 +24,7 @@ export async function registerBibliographyRenderer (): Promise<void> {
      */
     await joplin.contentScripts.onMessage(REFERENCE_LIST_CONTENT_SCRIPT_ID, (IDs: string[]) => {
         let refs: string[] = [];
+        IDs = [...new Set(IDs)];
         IDs.forEach(id => {
             try {
                 refs.push(`
