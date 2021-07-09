@@ -2,10 +2,10 @@ import { Reference } from "../../model/reference.model";
 
 declare const webviewApi: any;
 
-export default function(_context) { 
+export default function(context) { 
 	return {
 		plugin: function(markdownIt, _options) {
-			const contentScriptId = _context.contentScriptId;
+			const contentScriptId = context.contentScriptId;
 
 			/* Appends a new custom token for references list */
 			markdownIt.core.ruler.push("reference_list", async state => {
