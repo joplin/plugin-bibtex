@@ -8,10 +8,8 @@ import { Reference } from "./model/reference.model";
 import { parse } from "./util/parser.util";
 import { DataStore } from "./data/data-store";
 import {
-    ADD_BIBTEX_REFERENCE_COMMAND,
-    PLUGIN_ICON,
-    SETTINGS_FILE_PATH_ID,
-    ERROR_PARSING_FAILED
+    ERROR_PARSING_FAILED,
+    SETTINGS_FILE_PATH_ID
 } from "./constants";
 const fs = joplin.require("fs-extra");
 
@@ -41,5 +39,10 @@ async function loadBibTeXData (): Promise<void> {
         const refs: Reference[] = parse(fileContent);
         DataStore.setReferences(refs);
 
-    } catch (e) { }
+    } catch (e) {
+        console.log(e);
+        await joplin.views.dialogs.showMessageBox(
+            `${ERROR_PARSING_FAILED}\n\n${e.message}`
+        );
+    }
 }
