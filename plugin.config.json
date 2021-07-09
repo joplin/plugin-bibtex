@@ -1,3 +1,5 @@
 {
-	"extraScripts": []
+	"extraScripts": [
+		"ui/bibliography-renderer/render-list-content-script.ts"
+	]
 }
