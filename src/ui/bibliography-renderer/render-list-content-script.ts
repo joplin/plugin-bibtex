@@ -5,11 +5,9 @@ declare const webviewApi: any;
 export default function(_context) { 
 	return {
 		plugin: function(markdownIt, _options) {
-
 			const contentScriptId = _context.contentScriptId;
 
-			markdownIt.renderer.rules["reference_list"] = renderReferenceList;
-
+			/* Appends a new custom token for references list */
 			markdownIt.core.ruler.push("reference_list", async state => {
 
 				/* Collect references from the note body */
@@ -27,6 +25,8 @@ export default function(_context) {
 				state.tokens.push(token);
 			});
 			
+			/* Define how to render the previously defined token */
+			markdownIt.renderer.rules["reference_list"] = renderReferenceList;
 
 			function renderReferenceList (tokens, idx, options) {
 				let IDs: string[] = tokens[idx]["attrs"][0][1];
