@@ -57,8 +57,12 @@ export default function(context) {
 					webviewApi.postMessage("${contentScriptId}", ${JSON.stringify(IDs)}).then(refs => {
 						const referenceListView = document.getElementById("references_list");
 						const referenceTitleView = document.getElementById("references_title");
+
 						if (refs.length > 0) referenceTitleView.style.display = "block";
-						refs.forEach(ref => referenceListView.innerHTML += ref);
+
+						let ans = "";
+						refs.forEach(ref => ans += ref);
+						referenceListView.innerHTML = ans;
 					});
 					return false;
 				`;
