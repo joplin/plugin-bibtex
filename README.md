@@ -1,27 +1,38 @@
 
-# BibTeX Plugin
+<h1 align="center">Joplin BibTeX Plugin</h1>
 
-Many users use Joplin for research purposes, so it is natural for them to do citations all the time. Accordingly, adding a feature that supports citations and BibTeX will be of great benefit to Joplin. And here it is :)
+<div align="center">
+    <img src="https://github.com/joplin/plugin-bibtex/actions/workflows/github-actions-main.yml/badge.svg">
+    <a href="https://badge.fury.io/js/joplin-plugin-bibtex"><img src="https://badge.fury.io/js/joplin-plugin-bibtex.svg" alt="npm version" height="18"></a>
+    <img alt="npm" src="https://img.shields.io/npm/dw/joplin-plugin-bibtex">
+</div>
+
+<br>
+
+Many users use Joplin for research purposes, so it is natural for them to do citation all the time. Therefore, adding a feature that supports citing references in [BibTeX](http://www.bibtex.org/) format will be of great benefit to Joplin. And here it is :)
 - For more info: https://discourse.joplinapp.org/c/gsoc-projects/bibtex-plugin
 
-![BibTeX Plugin Demo](https://i.ibb.co/JyxhLzg/DEMO-FULL-PLUGIN.gif)
+![BibTeX Plugin Demo](https://i.ibb.co/c3HwRSX/DEMO-RENDER-REFERENCES-AT-THE-BOTTOM.gif)
 
 ## Features
-- Read from a source of citations (a `.bib` file).
-- Allow the user to choose from a list of previously imported citations.
+- Import a source of research references (a `.bib` file).
+- Allow the user to choose from a list of previously imported references.
 - Insert references into the note content.
+- Render a full list of references at the bottom of the note viewer (in [APA](https://apastyle.apa.org/) format) 
 
 ## Installation
+- Open Joplin
 - Go to Tools > Options > Plugins
 - Search for `bibtex`
 - Click Install plugin
 - Restart Joplin to enable the plugin
 
 ## How to use
-- Prepare a `BibTeX` file (if you are using Zotero, you can export your library as a `.bib` file)
-- Go to `Tools` > `Options` > `BibTeX Plugin` Section
-- Specify the path of your `.bib` file and click `Apply`
-- To Import a reference into your note content, simply click on the plugin icon in the toolbar and choose which reference to include, then click `OK`
+- Prepare a `BibTeX` file (if you are using Zotero, you can export your library as a `.bib` file).
+- Go to `Tools` > `Options` > `BibTeX Plugin` Section.
+- Specify the path of your `.bib` file and click `Apply`.
+- To Import a reference into your note content, simply click on the plugin icon in the toolbar and choose which references to include, then click `OK`.
+- You will see that the references you selected were inserted in the current position in the note body. Furthermore, any reference you include will automatically appear at the bottom of the note viewer.
 
 ## Building the plugin
 The plugin is built using Webpack, which creates the compiled code in `/dist`. A JPL archive will also be created at the root, which can use to distribute the plugin.
