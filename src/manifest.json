@@ -4,7 +4,7 @@
 	"app_min_version": "1.7",
 	"version": "0.3.0",
 	"name": "BibTeX",
-	"description": "Use locally stored BibTeX files to insert citations into the current note.",
+	"description": "Use locally stored BibTeX files to integrate citation into Joplin",
 	"author": "Abdallah Ahmed",
 	"homepage_url": "",
 	"repository_url": "https://github.com/joplin/plugin-bibtex",
