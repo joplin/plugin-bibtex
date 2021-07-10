@@ -6,7 +6,7 @@ import { escapeTitleText, escapeLinkUrl } from "./markdown.util";
  * Format a given reference as a valid markdown url
  */
 export function formatReference (ref: Reference): string {
-    const displayText: string = escapeTitleText(getDisplayText(ref));
+    const displayText: string = escapeTitleText(ref.id);
     const link: string = escapeLinkUrl(getLink(ref));
     return `[@${displayText}](${link})`;
 }
