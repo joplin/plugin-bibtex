@@ -1,5 +1,13 @@
 
-# Joplin BibTeX Plugin
+<h1 align="center">Joplin BibTeX Plugin</h1>
+
+<div align="center">
+    <img src="https://github.com/joplin/plugin-bibtex/actions/workflows/github-actions-main.yml/badge.svg">
+    <a href="https://badge.fury.io/js/joplin-plugin-bibtex"><img src="https://badge.fury.io/js/joplin-plugin-bibtex.svg" alt="npm version" height="18"></a>
+    <img alt="npm" src="https://img.shields.io/npm/dw/joplin-plugin-bibtex">
+</div>
+
+<br>
 
 Many users use Joplin for research purposes, so it is natural for them to do citation all the time. Therefore, adding a feature that supports citing references in [BibTeX](http://www.bibtex.org/) format will be of great benefit to Joplin. And here it is :)
 - For more info: https://discourse.joplinapp.org/c/gsoc-projects/bibtex-plugin
