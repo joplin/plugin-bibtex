@@ -21,16 +21,16 @@ const output = document.getElementById("output");
 function main () {
 
     /* State */
+    const json = JSON.parse(inputRefsView.textContent);
     const state = {
         // parse the refs data, get the name of the first author
-        refs: JSON
-                .parse( inputRefsView.textContent )
-                .map(ref => {
-                    return {
-                        ...ref,
-                        author: ref.author[0].given + " " + ref.author[0].family
-                    };
-                }),
+        refs: json.refs.map(ref => {
+            return {
+                ...ref,
+                author: ref.author[0].given + " " + ref.author[0].family
+            };
+        }),
+        strictMode: json.strictMode,
         selectedRefs: new Set()
     };
 
@@ -71,7 +71,8 @@ function main () {
                 }
             }
         });
-        autoCompleteJS.searchEngine = "strict";
+        console.log(state.strictMode);
+        autoCompleteJS.searchEngine = (state.strictMode) ? "strict" : "loose";
 
         // Focus the input field
         autoCompleteJS.input.focus();
