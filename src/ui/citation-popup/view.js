@@ -26,8 +26,10 @@ function main () {
         // parse the refs data, get the name of the first author
         refs: json.refs.map(ref => {
             return {
-                ...ref,
-                author: ref.author[0].given + " " + ref.author[0].family
+                id: ref["id"],
+                title: ref["title"] || "",
+                year: ref["year"] || -1,
+                author: (ref["author"]) ? ref.author[0].given + " " + ref.author[0].family : ""
             };
         }),
         strictMode: json.strictMode,
