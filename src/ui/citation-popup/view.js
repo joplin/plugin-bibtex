@@ -41,7 +41,7 @@ function main () {
             placeHolder: "Search for references...",
             data: {
                 src: state.refs,
-                keys: ["title"],
+                keys: ["title", "year"],
                 filter: list => {
                     return list.filter(item => !state.selectedRefs.has(item.value["id"]));
                 }
