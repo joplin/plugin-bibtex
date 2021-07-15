@@ -22,7 +22,15 @@ function main () {
 
     /* State */
     const state = {
-        refs: JSON.parse( inputRefsView.textContent ),
+        // parse the refs data, get the name of the first author
+        refs: JSON
+                .parse( inputRefsView.textContent )
+                .map(ref => {
+                    return {
+                        ...ref,
+                        author: ref.author[0].given + " " + ref.author[0].family
+                    };
+                }),
         selectedRefs: new Set()
     };
 
@@ -41,7 +49,7 @@ function main () {
             placeHolder: "Search for references...",
             data: {
                 src: state.refs,
-                keys: ["title", "year"],
+                keys: ["title", "author", "year"],
                 filter: list => {
                     return list.filter(item => !state.selectedRefs.has(item.value["id"]));
                 }
@@ -123,9 +131,9 @@ function main () {
 
 function renderRef (item, data) {
     const ref = data.value;
-    const author = he.encode(ref.author[0].given + " " + ref.author[0].family);
-    const year = ref.year;         // no need to escape the year since it's a number
-    const title = he.encode(ref.title);
+    const author = he.encode(ref["author"]);
+    const year = ref["year"];         // no need to escape the year since it's a number
+    const title = he.encode(ref["title"]);
 
     // Modify Results Item Style
     item.style = "display: flex; justify-content: space-between;";
