@@ -52,16 +52,7 @@ function main () {
                 tabSelect: true
             },
             resultItem: {
-                element: (item, data) => {
-                    // Modify Results Item Style
-                    item.style = "display: flex; justify-content: space-between;";
-                    // Modify Results Item Content
-                    item.innerHTML = `
-                        <span style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
-                            ${ data.match }
-                        </span>
-                    `;
-                },
+                element: renderRef,
                 highlight: true
             },
             events: {
@@ -128,4 +119,24 @@ function main () {
         );
     }
 
+}
+
+function renderRef (item, data) {
+    const ref = data.value;
+    const author = he.encode(ref.author[0].given + " " + ref.author[0].family);
+    const year = ref.year;         // no need to escape the year since it's a number
+    const title = he.encode(ref.title);
+
+    // Modify Results Item Style
+    item.style = "display: flex; justify-content: space-between;";
+    // Modify Results Item Content
+    item.innerHTML = `
+        <span style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
+            <strong>${title}</strong>
+            <br>
+            <span style="color: #27ae60">${author}</span>
+            <br>
+            ${year}
+        </span>
+    `;
 }
