@@ -53,7 +53,15 @@ function main () {
                 src: state.refs,
                 keys: ["title", "author", "year"],
                 filter: list => {
-                    return list.filter(item => !state.selectedRefs.has(item.value["id"]));
+                    const filteredResults = [];
+                    list.forEach(item => {
+                        if (state.selectedRefs.has(item.value["id"])) return;
+                        if ( ! filteredResults.find(res => res.value["id"] === item.value["id"]) ) {
+                            filteredResults.push(item);
+                        }
+                    });
+
+                    return filteredResults;
                 }
             },
             resultsList: {
@@ -73,7 +81,6 @@ function main () {
                 }
             }
         });
-        console.log(state.strictMode);
         autoCompleteJS.searchEngine = (state.strictMode) ? "strict" : "loose";
 
         // Focus the input field
