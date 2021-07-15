@@ -129,7 +129,13 @@ function main () {
                 .map(refId => state.refs.find(r => r["id"] === refId))             // id => reference
                 .map(ref => (`
                     <li id="${ he.encode(ref["id"]) }">
-                        <span class="title">${ he.encode(ref["title"]) }</span>
+                        <span class="title">
+                            <strong>${ he.encode(ref["title"]) }</strong>
+                            <br>
+                            ${ he.encode( ref["author"] ) }
+                            <br>
+                            ${ ref["year"] }
+                        </span>
                         <span class="icon_remove">x</span>
                     </li>
                 `))                                                 // reference => <li>
