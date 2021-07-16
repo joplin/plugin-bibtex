@@ -28,7 +28,7 @@ function main () {
             return {
                 id: ref["id"],
                 title: ref["title"] || "",
-                year: ref["year"] || -1,
+                year: (ref["year"] || -1).toString(),
                 author: (ref["author"]) ? ref.author[0].given + " " + ref.author[0].family : ""
             };
         }),
@@ -133,7 +133,7 @@ function main () {
                             <br>
                             ${ he.encode( ref["author"] ) }
                             <br>
-                            ${ ref["year"] }
+                            ${ he.encode( ref["year"] ) }
                         </span>
                         <span class="icon_remove">x</span>
                     </li>
@@ -147,7 +147,7 @@ function main () {
 function renderRef (item, data) {
     const ref = data.value;
     const author = he.encode(ref["author"]);
-    const year = ref["year"];         // no need to escape the year since it's a number
+    const year = he.encode(ref["year"]);
     const title = he.encode(ref["title"]);
 
     // Modify Results Item Style
