@@ -21,7 +21,9 @@ const output = document.getElementById("output");
 function main () {
 
     /* State */
-    const refs = JSON.parse(inputRefsView.textContent);
+    const refs = null;
+    try { refs = JSON.parse(inputRefsView.textContent); } catch {}
+    
     const state = {
         // parse the refs data, get the name of the first author
         refs: refs.map(ref => {
