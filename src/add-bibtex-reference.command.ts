@@ -8,7 +8,6 @@ import {
     ADD_BIBTEX_REFERENCE_COMMAND,
     PLUGIN_ICON,
     SETTINGS_FILE_PATH_ID,
-    SETTINGS_STRICT_MODE,
     ERROR_PARSING_FAILED
 } from "./constants";
 const fs = joplin.require("fs-extra");
@@ -41,11 +40,8 @@ export async function registerAddBibTexReferenceCommand () {
                 const refs: Reference[] = parse(fileContent);
                 DataStore.setReferences(refs);
 
-                // Get the search mode
-                const strictMode: boolean = await joplin.settings.value(SETTINGS_STRICT_MODE);
-
                 // Show the citation popup and get the IDs of the selected references
-                const selectedRefsIDs: string[] = await showCitationPopup( {refs, strictMode} );
+                const selectedRefsIDs: string[] = await showCitationPopup(refs);
 
                 // If no reference was selected, exit the command
                 if (selectedRefsIDs.length === 0) return;
