@@ -1,6 +1,6 @@
 import joplin from "api";
 import { Reference } from "../../model/reference.model";
-import { getDate } from "../../util/get-date.util";
+import { getDate, getDateYear } from "../../util/get-date.util";
 import { encode } from "html-entities";
 import { CITATION_POPUP_ID } from "../../constants";
 const fs = joplin.require("fs-extra");
@@ -53,7 +53,7 @@ function fromRefsToHTML (refs: Reference[]): string {
                 id: ref.id,
                 title: ref.title,
                 author: ref.author,
-                year: (ref.issued && ref.issued["date-parts"]) ? getDate(ref).getFullYear() : null
+                year: getDateYear(ref)
             };
         })
     );

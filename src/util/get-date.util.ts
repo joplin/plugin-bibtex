@@ -12,3 +12,11 @@ export function getDate (ref: Reference): Date {
     }
     throw new Error("Invalid Date Object");
 }
+
+export function getDateYear (ref: Reference): number {
+    try {
+        return getDate(ref).getFullYear();
+    } catch (e) {
+        return null;
+    }
+}

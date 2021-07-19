@@ -21,8 +21,20 @@ const output = document.getElementById("output");
 function main () {
 
     /* State */
+    let refs = null;
+    try { refs = JSON.parse(inputRefsView.textContent); }
+    catch (e) { console.log(e) }
+    
     const state = {
-        refs: JSON.parse( inputRefsView.textContent ),
+        // parse the refs data, get the name of the first author
+        refs: refs.map(ref => {
+            return {
+                id: ref["id"],
+                title: ref["title"] || "",
+                year: (ref["year"] || -1).toString(),
+                author: (ref["author"]) ? ref.author[0].given + " " + ref.author[0].family : ""
+            };
+        }),
         selectedRefs: new Set()
     };
 
@@ -41,9 +53,17 @@ function main () {
             placeHolder: "Search for references...",
             data: {
                 src: state.refs,
-                keys: ["title"],
+                keys: ["title", "author", "year"],
                 filter: list => {
-                    return list.filter(item => !state.selectedRefs.has(item.value["id"]));
+                    const filteredResults = [];
+                    list.forEach(item => {
+                        if (state.selectedRefs.has(item.value["id"])) return;
+                        if ( ! filteredResults.find(res => res.value["id"] === item.value["id"]) ) {
+                            filteredResults.push(item);
+                        }
+                    });
+
+                    return filteredResults;
                 }
             },
             resultsList: {
@@ -52,16 +72,7 @@ function main () {
                 tabSelect: true
             },
             resultItem: {
-                element: (item, data) => {
-                    // Modify Results Item Style
-                    item.style = "display: flex; justify-content: space-between;";
-                    // Modify Results Item Content
-                    item.innerHTML = `
-                        <span style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
-                            ${ data.match }
-                        </span>
-                    `;
-                },
+                element: renderRef,
                 highlight: true
             },
             events: {
@@ -120,7 +131,13 @@ function main () {
                 .map(refId => state.refs.find(r => r["id"] === refId))             // id => reference
                 .map(ref => (`
                     <li id="${ he.encode(ref["id"]) }">
-                        <span class="title">${ he.encode(ref["title"]) }</span>
+                        <span class="title">
+                            <strong>${ he.encode(ref["title"]) }</strong>
+                            <br>
+                            ${ he.encode( ref["author"] ) }
+                            <br>
+                            ${ he.encode( ref["year"] ) }
+                        </span>
                         <span class="icon_remove">x</span>
                     </li>
                 `))                                                 // reference => <li>
@@ -128,4 +145,21 @@ function main () {
         );
     }
 
+}
+
+function renderRef (item, data) {
+    const ref = data.value;
+
+    // Modify Results Item Style
+    item.style = "display: flex; justify-content: space-between;";
+    // Modify Results Item Content
+    item.innerHTML = `
+        <span style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
+            <strong>${ he.encode(ref["title"]) }</strong>
+            <br>
+            <span style="color: #27ae60">${ he.encode(ref["author"]) }</span>
+            <br>
+            ${ he.encode(ref["year"]) }
+        </span>
+    `;
 }

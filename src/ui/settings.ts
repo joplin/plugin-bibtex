@@ -11,23 +11,23 @@ import {
  */
 export async function initConfigScreen (): Promise<void> {
 
-    	// Register the config screen page
-		await joplin.settings.registerSection(SETTINGS_SECTION_ID, {
-			name: "bibtex",
-			label: "BibTeX Plugin",
-			description: "Use locally stored BibTeX files to include citations in Joplin notes",
-			iconName: PLUGIN_ICON
-		});
+	// Register the config screen page
+	await joplin.settings.registerSection(SETTINGS_SECTION_ID, {
+		name: "bibtex",
+		label: "BibTeX Plugin",
+		description: "Use locally stored BibTeX files to include citations in Joplin notes",
+		iconName: PLUGIN_ICON
+	});
 
-		// Bibtex file path
-		
-		const options: Record<string, SettingItem> = {};
-		options[SETTINGS_FILE_PATH_ID] = {
-			value: "",
-			type: 2,
-			section: 'bibtex.settings',
-			public: true,
-			label: 'BibTeX File',
-		};
-		await joplin.settings.registerSettings(options);
+	// Bibtex file path
+	
+	const options: Record<string, SettingItem> = {};
+	options[SETTINGS_FILE_PATH_ID] = {
+		value: "",
+		type: 2,
+		section: 'bibtex.settings',
+		public: true,
+		label: 'BibTeX File',
+	};
+	await joplin.settings.registerSettings(options);
 }
