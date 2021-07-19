@@ -21,8 +21,9 @@ const output = document.getElementById("output");
 function main () {
 
     /* State */
-    const refs = null;
-    try { refs = JSON.parse(inputRefsView.textContent); } catch {}
+    let refs = null;
+    try { refs = JSON.parse(inputRefsView.textContent); }
+    catch (e) { console.log(e) }
     
     const state = {
         // parse the refs data, get the name of the first author
@@ -148,20 +149,17 @@ function main () {
 
 function renderRef (item, data) {
     const ref = data.value;
-    const author = he.encode(ref["author"]);
-    const year = he.encode(ref["year"]);
-    const title = he.encode(ref["title"]);
 
     // Modify Results Item Style
     item.style = "display: flex; justify-content: space-between;";
     // Modify Results Item Content
     item.innerHTML = `
         <span style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
-            <strong>${title}</strong>
+            <strong>${ he.encode(ref["title"]) }</strong>
             <br>
-            <span style="color: #27ae60">${author}</span>
+            <span style="color: #27ae60">${ he.encode(ref["author"]) }</span>
             <br>
-            ${year}
+            ${ he.encode(ref["year"]) }
         </span>
     `;
 }
