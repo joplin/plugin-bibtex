@@ -23,13 +23,21 @@ export async function registerAddBibTexReferenceCommand () {
         execute: async () => {
 
             // Get file Path and read the contents of the file
-            const filePath: string = await joplin.settings.value(SETTINGS_FILE_PATH_ID);
+            const filePaths: string[] = 
+                (await joplin.settings.value(SETTINGS_FILE_PATH_ID))
+                    .split(";")
+                    .map(path => path.trim());
+
             let fileContent: string;
             try {
-                fileContent = await fs.readFile(filePath, "utf8");
+                fileContent = (
+                    await Promise.all(
+                        filePaths.map(path => fs.readFile(path, "utf8"))
+                    )
+                ).join("");
             } catch (e) {
                 await joplin.views.dialogs.showMessageBox(
-                    `Error: Could not open file ${filePath}: ${e.message}`
+                    `Error: Could not open some files: ${e.message}`
                 );
                 return;
             }
