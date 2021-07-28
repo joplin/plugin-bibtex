@@ -45,6 +45,7 @@ export class CSLProcessor {
 
     /**
      * Sets the citation style that should be used for formatting references
+     * Warning: This is a slow operation since it requires reading a file
      */
     public setStyle(CSLFilePath: string): void {
         this.init(CSLFilePath);
