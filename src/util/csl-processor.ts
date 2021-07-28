@@ -9,6 +9,7 @@ const fs = joplin.require("fs-extra");
  * @singleton
  * https://citeproc-js.readthedocs.io/en/latest/running.html
  * Format research references according to a given citation style
+ * Depends on DataStore
  */
 export class CSLProcessor {
     private static instance: CSLProcessor = null;
@@ -57,10 +58,7 @@ export class CSLProcessor {
      */
     public formatRefs(refIDs: string[]): string {
         this.citeproc.updateItems(refIDs);
-        const html: string = this.citeproc
-            .makeBibliography()[1]
-            .map((ref) => `<li>${ref}</li>`)
-            .join("");
+        const html: string = this.citeproc.makeBibliography()[1].join("<br>");
         return html;
     }
 }

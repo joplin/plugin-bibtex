@@ -70,7 +70,7 @@ export default function (context) {
 
                 return `
 					<h1 id="references_title" style="display:none">References</h1>
-					<ul id="references_list"></ul>
+					<div id="references_list"></div>
 					<style onload='${script.replace(/\n/g, " ")}'/>
 				`;
             }
