@@ -1,7 +1,5 @@
 import { Reference } from "../../model/reference.model";
 
-declare const webviewApi: any;
-
 export default function (context) {
     return {
         plugin: function (markdownIt, _options) {
@@ -44,7 +42,6 @@ export default function (context) {
 
                 /* Append reference_list token */
                 let token = new state.Token("reference_list", "", 0);
-                console.log(ids);
                 token.attrSet("refs", ids);
                 state.tokens.push(token);
             });
@@ -55,8 +52,6 @@ export default function (context) {
             function renderReferenceList(tokens, idx, options) {
                 let IDs: string[] = tokens[idx]["attrs"][0][1];
                 if (IDs.length === 0) return "";
-
-                console.log("Here 1");
 
                 const script: string = `
 					webviewApi.postMessage("${contentScriptId}", ${JSON.stringify(
