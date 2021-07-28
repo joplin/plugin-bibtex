@@ -1,9 +1,10 @@
 import joplin from "api";
-import { SettingItem } from "api/types";
+import { SettingItemType } from "api/types";
 import {
     SETTINGS_SECTION_ID,
     PLUGIN_ICON,
     SETTINGS_BIBTEX_FILE_PATH_ID,
+    SETTINGS_CSL_FILE_PATH_ID,
 } from "../constants";
 
 /**
@@ -19,15 +20,22 @@ export async function initConfigScreen(): Promise<void> {
         iconName: PLUGIN_ICON,
     });
 
-    // Bibtex file path
+    // Register settings fields
+    await joplin.settings.registerSettings({
+        [SETTINGS_BIBTEX_FILE_PATH_ID]: {
+            value: "",
+            type: SettingItemType.String,
+            section: SETTINGS_SECTION_ID,
+            public: true,
+            label: "BibTeX File",
+        },
 
-    const options: Record<string, SettingItem> = {};
-    options[SETTINGS_BIBTEX_FILE_PATH_ID] = {
-        value: "",
-        type: 2,
-        section: "bibtex.settings",
-        public: true,
-        label: "BibTeX File",
-    };
-    await joplin.settings.registerSettings(options);
+        [SETTINGS_CSL_FILE_PATH_ID]: {
+            value: "",
+            type: SettingItemType.String,
+            section: SETTINGS_SECTION_ID,
+            public: true,
+            label: "CSL File (used to specify citation style)",
+        },
+    });
 }
