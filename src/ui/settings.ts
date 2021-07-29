@@ -1,6 +1,5 @@
 import joplin from "api";
 import { SettingItemType } from "api/types";
-import { CSLProcessor } from "../util/csl-processor";
 import {
     SETTINGS_SECTION_ID,
     PLUGIN_ICON,
@@ -38,17 +37,5 @@ export async function initConfigScreen(): Promise<void> {
             public: true,
             label: "CSL File (used to specify citation style)",
         },
-    });
-
-    /**
-     * Listen to changes applied to the CSL field
-     * On change, set the style of the CSL Processor
-     */
-    joplin.settings.onChange((event) => {
-        if (event.keys.includes(SETTINGS_CSL_FILE_PATH_ID)) {
-            joplin.settings.value(SETTINGS_CSL_FILE_PATH_ID).then((style) => {
-                CSLProcessor.getInstance().setStyle(style);
-            });
-        }
     });
 }

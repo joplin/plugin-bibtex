@@ -1,7 +1,10 @@
 import joplin from "api";
 import { ContentScriptType } from "api/types";
 import { CSLProcessor } from "../../util/csl-processor";
-import { REFERENCE_LIST_CONTENT_SCRIPT_ID } from "../../constants";
+import {
+    REFERENCE_LIST_CONTENT_SCRIPT_ID,
+    SETTINGS_CSL_FILE_PATH_ID,
+} from "../../constants";
 
 /**
  * Render the full list of references at the end of the note viewer
@@ -15,22 +18,28 @@ export async function registerBibliographyRenderer(): Promise<void> {
     );
 
     /**
-     * 1- Lookup reference objects based on their IDs (using DataStore)
-     * 2- Convert reference objects into APA format (in HTML)
-     * If some reference objects are not found, ignore them
-     * Pass the result to the content script
-     * No need to html-escape the APA output, the library handles that
+     * Format the references according to the style specified by the user
      */
+    const processor = CSLProcessor.getInstance();
     await joplin.contentScripts.onMessage(
         REFERENCE_LIST_CONTENT_SCRIPT_ID,
 
         (IDs: string[]) => {
             IDs = [...new Set(IDs)]; // Filter duplicate references
-
-            const processor = CSLProcessor.getInstance();
-            const html = processor.formatRefs(IDs);
-
-            return html;
+            return processor.formatRefs(IDs);
         }
     );
+    processor.setStyle(await joplin.settings.value(SETTINGS_CSL_FILE_PATH_ID));
+
+    /**
+     * Listen to changes applied to the CSL field
+     * On change, set the style of the CSL Processor
+     */
+    joplin.settings.onChange(async (event) => {
+        if (event.keys.includes(SETTINGS_CSL_FILE_PATH_ID)) {
+            CSLProcessor.getInstance().setStyle(
+                await joplin.settings.value(SETTINGS_CSL_FILE_PATH_ID)
+            );
+        }
+    });
 }
