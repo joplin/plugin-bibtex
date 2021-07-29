@@ -57,7 +57,6 @@ export default function (context) {
 					webviewApi.postMessage("${contentScriptId}", ${JSON.stringify(
                     IDs
                 )}).then(html => {
-						console.log(html);
 						const referenceListView = document.getElementById("references_list");
 						const referenceTitleView = document.getElementById("references_title");
 
