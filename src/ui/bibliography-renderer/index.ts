@@ -29,7 +29,7 @@ export async function registerBibliographyRenderer(): Promise<void> {
             return processor.formatRefs(IDs);
         }
     );
-    processor.setStyle(await joplin.settings.value(SETTINGS_CSL_FILE_PATH_ID));
+    setProcessorStyle(processor);
 
     /**
      * Listen to changes applied to the CSL field
@@ -37,9 +37,21 @@ export async function registerBibliographyRenderer(): Promise<void> {
      */
     joplin.settings.onChange(async (event) => {
         if (event.keys.includes(SETTINGS_CSL_FILE_PATH_ID)) {
-            CSLProcessor.getInstance().setStyle(
-                await joplin.settings.value(SETTINGS_CSL_FILE_PATH_ID)
-            );
+            await setProcessorStyle(processor);
         }
     });
+}
+
+/**
+ * Sets the style of the given processor as the value specified by the user in the settings
+ */
+async function setProcessorStyle(processor: CSLProcessor) {
+    try {
+        processor.setStyle(
+            await joplin.settings.value(SETTINGS_CSL_FILE_PATH_ID)
+        );
+    } catch (e) {
+        console.log(e);
+        await joplin.views.dialogs.showMessageBox(e.message);
+    }
 }

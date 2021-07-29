@@ -54,11 +54,10 @@ export class CSLProcessor {
 
     /**
      * Given an array of references,
-     * returns cited version of the research reference as an HTML string
+     * returns cited version of the research references as an HTML string
      */
     public formatRefs(refIDs: string[]): string {
         this.citeproc.updateItems(refIDs);
-        const html: string = this.citeproc.makeBibliography()[1].join("<br>");
-        return html;
+        return this.citeproc.makeBibliography()[1].join("<br>");
     }
 }
