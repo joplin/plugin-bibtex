@@ -26,6 +26,11 @@ export async function registerBibliographyRenderer(): Promise<void> {
 
         (IDs: string[]) => {
             IDs = [...new Set(IDs)]; // Filter duplicate references
+
+            /**
+             * Apply the specified citation style to the references
+             * Note: Does html-encoding by default
+             */
             return processor.formatRefs(IDs);
         }
     );
