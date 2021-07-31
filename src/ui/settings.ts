@@ -28,6 +28,8 @@ export async function initConfigScreen(): Promise<void> {
             section: SETTINGS_SECTION_ID,
             public: true,
             label: "BibTeX File",
+            description:
+                'You can include multiple paths by putting a ";" between every two paths',
         },
 
         [SETTINGS_CSL_FILE_PATH_ID]: {
