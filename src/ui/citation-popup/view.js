@@ -31,7 +31,7 @@ function main () {
             return {
                 id: ref["id"],
                 title: ref["title"] || "",
-                year: (ref["year"] || -1).toString(),
+                year: ref["year"] ? ref["year"].toString() : "",
                 author: (ref["author"]) ? ref.author[0].given + " " + ref.author[0].family : ""
             };
         }),
