@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "citation-js": "^0.5.1",
+    "citeproc": "^2.4.59",
     "html-entities": "^2.3.2"
   },
   "browser": {

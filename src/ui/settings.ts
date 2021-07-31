@@ -1,33 +1,45 @@
-import joplin from 'api';
-import { SettingItem } from 'api/types';
+import joplin from "api";
+import { SettingItemType } from "api/types";
 import {
-	SETTINGS_SECTION_ID,
-	PLUGIN_ICON,
-	SETTINGS_FILE_PATH_ID
-} from '../constants';
+    SETTINGS_SECTION_ID,
+    PLUGIN_ICON,
+    SETTINGS_BIBTEX_FILE_PATH_ID,
+    SETTINGS_CSL_FILE_PATH_ID,
+} from "../constants";
 
 /**
  * Initialize all the necessary components in the config screen
  */
-export async function initConfigScreen (): Promise<void> {
+export async function initConfigScreen(): Promise<void> {
+    // Register the config screen page
+    await joplin.settings.registerSection(SETTINGS_SECTION_ID, {
+        name: "bibtex",
+        label: "BibTeX Plugin",
+        description:
+            "Use locally stored BibTeX files to include citations in Joplin notes",
+        iconName: PLUGIN_ICON,
+    });
 
-	// Register the config screen page
-	await joplin.settings.registerSection(SETTINGS_SECTION_ID, {
-		name: "bibtex",
-		label: "BibTeX Plugin",
-		description: "Use locally stored BibTeX files to include citations in Joplin notes",
-		iconName: PLUGIN_ICON
-	});
+    // Register settings fields
+    await joplin.settings.registerSettings({
+        [SETTINGS_BIBTEX_FILE_PATH_ID]: {
+            value: "",
+            type: SettingItemType.String,
+            section: SETTINGS_SECTION_ID,
+            public: true,
+            label: "BibTeX File",
+            description:
+                'You can include multiple paths by putting a ";" between every two paths',
+        },
 
-	// Bibtex file path
-	
-	const options: Record<string, SettingItem> = {};
-	options[SETTINGS_FILE_PATH_ID] = {
-		value: "",
-		type: 2,
-		section: 'bibtex.settings',
-		public: true,
-		label: 'BibTeX File',
-	};
-	await joplin.settings.registerSettings(options);
+        [SETTINGS_CSL_FILE_PATH_ID]: {
+            value: "",
+            type: SettingItemType.String,
+            section: SETTINGS_SECTION_ID,
+            public: true,
+            label: "CSL File (used to specify citation style)",
+            description:
+                "You might need to restart the app for changes to take effect",
+        },
+    });
 }
