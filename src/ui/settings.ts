@@ -38,6 +38,8 @@ export async function initConfigScreen(): Promise<void> {
             section: SETTINGS_SECTION_ID,
             public: true,
             label: "CSL File (used to specify citation style)",
+            description:
+                "You might need to restart the app for changes to take effect",
         },
     });
 }

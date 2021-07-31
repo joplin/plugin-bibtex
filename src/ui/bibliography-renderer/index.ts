@@ -44,7 +44,6 @@ export async function registerBibliographyRenderer(): Promise<void> {
     joplin.settings.onChange(async (event) => {
         if (event.keys.includes(SETTINGS_CSL_FILE_PATH_ID)) {
             await setProcessorStyle(processor);
-            await joplin.views.dialogs.showMessageBox(MESSAGE_RESTART_APP);
         }
     });
 }
