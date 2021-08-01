@@ -4,7 +4,6 @@ import { promises as fs } from "fs";
 import { join } from "path";
 
 describe("Data Store", () => {
-
     it("Calling SetReference() updates the data in the store", async () => {
         const data: Reference[] = JSON.parse(
             await fs.readFile(join(__dirname, "assets", "test.json"), "utf-8")
@@ -41,5 +40,4 @@ describe("Data Store", () => {
 
         expect(() => DataStore.getReferenceById(refId)).toThrow();
     });
-
 });
