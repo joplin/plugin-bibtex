@@ -7,6 +7,6 @@ import { Reference } from "../model/reference.model";
  * @param data raw bibtex data as a string
  * @returns Array of reference objects
  */
-export function parse (data: string): Reference[] {
+export function parse(data: string): Reference[] {
     return new Cite(data).data;
 }
