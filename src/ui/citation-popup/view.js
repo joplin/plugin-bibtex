@@ -7,10 +7,10 @@ waits until all the other scripts get loaded by Joplin,
 and then starts doing its job
 */
 const intervalId = setInterval(() => {
-	if (typeof he !== 'undefined') {
-		clearInterval(intervalId);
-		main();
-	}
+    if (typeof he !== "undefined") {
+        clearInterval(intervalId);
+        main();
+    }
 }, 100);
 
 /* UI Elements */
@@ -18,77 +18,85 @@ const inputRefsView = document.getElementById("json");
 const selectedRefsView = document.getElementById("selected_refs_list");
 const output = document.getElementById("output");
 
-function main () {
-
+function main() {
     /* State */
     let refs = null;
-    try { refs = JSON.parse(inputRefsView.textContent); }
-    catch (e) { console.log(e) }
-    
+    try {
+        refs = JSON.parse(inputRefsView.textContent);
+    } catch (e) {
+        console.log(e);
+    }
+
     const state = {
         // parse the refs data, get the name of the first author
-        refs: refs.map(ref => {
+        refs: refs.map((ref) => {
             return {
                 id: ref["id"],
                 title: ref["title"] || "",
-                year: (ref["year"] || -1).toString(),
-                author: (ref["author"]) ? ref.author[0].given + " " + ref.author[0].family : ""
+                year: ref["year"] ? ref["year"].toString() : "",
+                author: ref["author"]
+                    ? ref.author[0].given + " " + ref.author[0].family
+                    : "",
             };
         }),
-        selectedRefs: new Set()
+        selectedRefs: new Set(),
     };
 
     configAutoComplete();
 
     /* Event Listeners */
-    selectedRefsView.addEventListener("click", event => {
+    selectedRefsView.addEventListener("click", (event) => {
         if (event.target.classList.contains("icon_remove")) {
             removeReference(event.target.parentNode.id);
         }
     });
 
-    function configAutoComplete () {
-
+    function configAutoComplete() {
         const autoCompleteJS = new autoComplete({
             placeHolder: "Search for references...",
             data: {
                 src: state.refs,
                 keys: ["title", "author", "year"],
-                filter: list => {
+                filter: (list) => {
                     const filteredResults = [];
-                    list.forEach(item => {
+                    list.forEach((item) => {
                         if (state.selectedRefs.has(item.value["id"])) return;
-                        if ( ! filteredResults.find(res => res.value["id"] === item.value["id"]) ) {
+                        if (
+                            !filteredResults.find(
+                                (res) => res.value["id"] === item.value["id"]
+                            )
+                        ) {
                             filteredResults.push(item);
                         }
                     });
 
                     return filteredResults;
-                }
+                },
             },
             resultsList: {
                 noResults: true,
                 maxResults: 15,
-                tabSelect: true
+                tabSelect: true,
             },
             resultItem: {
                 element: renderRef,
-                highlight: true
+                highlight: true,
             },
             events: {
                 input: {
                     focus: () => {
-                        if (autoCompleteJS.input.value.length) autoCompleteJS.start();
-                    }
-                }
-            }
+                        if (autoCompleteJS.input.value.length)
+                            autoCompleteJS.start();
+                    },
+                },
+            },
         });
         autoCompleteJS.searchEngine = "strict";
 
         // Focus the input field
         autoCompleteJS.input.focus();
 
-        autoCompleteJS.input.addEventListener("selection", event => {
+        autoCompleteJS.input.addEventListener("selection", (event) => {
             const feedback = event.detail;
             const selection = feedback.selection.value;
             addReference(selection["id"]);
@@ -97,21 +105,20 @@ function main () {
             // after adding the reference to the selected area
             autoCompleteJS.input.value = "";
         });
-
     }
 
-    function addReference (refId = "") {
+    function addReference(refId = "") {
         state.selectedRefs.add(refId);
         render();
     }
 
-    function removeReference (refId = "") {
+    function removeReference(refId = "") {
         state.selectedRefs.delete(refId);
         render();
     }
 
     /* Rendering state-based UI */
-    function render () {
+    function render() {
         const selectedRefsArray = Array.from(state.selectedRefs);
         selectedRefsView.innerHTML = template(selectedRefsArray);
         output.value = JSON.stringify(selectedRefsArray);
@@ -122,32 +129,31 @@ function main () {
      * @param {Reference[]} refs
      * @returns string
      */
-    function template (refs = []) {
+    function template(refs = []) {
         if (refs.length === 0) {
             return "Select some references to be added to the current note";
         }
-        return (
-            refs
-                .map(refId => state.refs.find(r => r["id"] === refId))             // id => reference
-                .map(ref => (`
-                    <li id="${ he.encode(ref["id"]) }">
+        return refs
+            .map((refId) => state.refs.find((r) => r["id"] === refId)) // id => reference
+            .map(
+                (ref) => `
+                    <li id="${he.encode(ref["id"])}">
                         <span class="title">
-                            <strong>${ he.encode(ref["title"]) }</strong>
+                            <strong>${he.encode(ref["title"])}</strong>
                             <br>
-                            ${ he.encode( ref["author"] ) }
+                            ${he.encode(ref["author"])}
                             <br>
-                            ${ he.encode( ref["year"] ) }
+                            ${he.encode(ref["year"])}
                         </span>
                         <span class="icon_remove">x</span>
                     </li>
-                `))                                                 // reference => <li>
-                .join(" ")
-        );
+                `
+            ) // reference => <li>
+            .join(" ");
     }
-
 }
 
-function renderRef (item, data) {
+function renderRef(item, data) {
     const ref = data.value;
 
     // Modify Results Item Style
@@ -155,11 +161,11 @@ function renderRef (item, data) {
     // Modify Results Item Content
     item.innerHTML = `
         <span style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
-            <strong>${ he.encode(ref["title"]) }</strong>
+            <strong>${he.encode(ref["title"])}</strong>
             <br>
-            <span style="color: #27ae60">${ he.encode(ref["author"]) }</span>
+            <span style="color: #27ae60">${he.encode(ref["author"])}</span>
             <br>
-            ${ he.encode(ref["year"]) }
+            ${he.encode(ref["year"])}
         </span>
     `;
 }
