@@ -1,4 +1,4 @@
 export interface Author {
-    given: string,
-    family: string
+    given: string;
+    family: string;
 }

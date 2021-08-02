@@ -1,7 +1,17 @@
 <!-- content -->
 
 <main>
-    <input id="autoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" tabindex="1">
+    <input
+        id="autoComplete"
+        type="search"
+        dir="ltr"
+        spellcheck="false"
+        autocorrect="off"
+        autocomplete="off"
+        autocapitalize="off"
+        maxlength="2048"
+        tabindex="1"
+    />
 
     <ul id="selected_refs_list">
         Select some references to be added to the current note
@@ -14,10 +24,9 @@
             <span class="icon_remove">x</span>
         </li> -->
     </ul>
-
 </main>
 
 <!-- Hidden input element to store the chosen reference -->
 <form name="main">
-    <input type="hidden" id="output" name="output" value="[]">
+    <input type="hidden" id="output" name="output" value="[]" />
 </form>
