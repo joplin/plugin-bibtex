@@ -4,7 +4,6 @@ import { promises as fs } from "fs";
 import { join } from "path";
 
 describe("APA Util", () => {
-
     it("Convert json reference to APA format", async () => {
         const data: Reference[] = JSON.parse(
             await fs.readFile(join(__dirname, "assets", "test.json"), "utf-8")
@@ -18,5 +17,4 @@ describe("APA Util", () => {
 
         expect(result).toBe(html);
     });
-
 });
