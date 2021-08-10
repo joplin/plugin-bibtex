@@ -1,4 +1,5 @@
 import { Reference } from "../../model/reference.model";
+import { extractReferences } from "./extract-references";
 
 export default function (context) {
     return {
@@ -7,38 +8,8 @@ export default function (context) {
 
             /* Appends a new custom token for references list */
             markdownIt.core.ruler.push("reference_list", async (state) => {
-                /* Collect references from the note body using Depth-first-search */
-                const ids: Reference[] = [];
-                dfs(state.tokens);
-
-                function dfs(children: any[]): void {
-                    if (!children) return;
-
-                    /* Search for three consecutive tokens: "link_open", "text", and "link_close" */
-                    for (let i = 1; i < children.length - 1; i++) {
-                        const curr = children[i],
-                            prev = children[i - 1],
-                            next = children[i + 1];
-                        if (
-                            prev["type"] === "link_open" &&
-                            curr["type"] === "text" &&
-                            next["type"] === "link_close" &&
-                            curr.content &&
-                            curr.content.length > 1 &&
-                            curr.content.startsWith("@")
-                        ) {
-                            const id = curr.content.substring(1);
-                            ids.push(id);
-                        } else {
-                            if (curr["children"]) dfs(curr["children"]);
-                        }
-                    }
-                    // first and last child that were not traversed previously
-                    const last = children[children.length - 1],
-                        first = children[0];
-                    if (last["children"]) dfs(last["children"]);
-                    if (first["children"]) dfs(first["children"]);
-                }
+                /* Collect references from the note body */
+                const ids: Reference[] = extractReferences(state.tokens);
 
                 /* Append reference_list token */
                 let token = new state.Token("reference_list", "", 0);
