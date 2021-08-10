@@ -7,9 +7,9 @@ export default function (context) {
             const contentScriptId = context.contentScriptId;
 
             /* Appends a new custom token for references list */
-            markdownIt.core.ruler.push("reference_list", async (state) => {
+            markdownIt.core.ruler.push("reference_list", (state) => {
                 /* Collect references from the note body */
-                const ids: Reference[] = extractReferences(state.tokens);
+                const ids: string[] = extractReferences(state.tokens);
 
                 /* Append reference_list token */
                 let token = new state.Token("reference_list", "", 0);
