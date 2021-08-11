@@ -1,10 +1,10 @@
 import joplin from "api";
 import { ContentScriptType } from "api/types";
+import { DataStore } from "../../data/data-store";
 import { CSLProcessor } from "../../util/csl-processor";
 import {
     REFERENCE_LIST_CONTENT_SCRIPT_ID,
     SETTINGS_CSL_FILE_PATH_ID,
-    MESSAGE_RESTART_APP,
 } from "../../constants";
 
 /**
@@ -26,11 +26,22 @@ export async function registerBibliographyRenderer(): Promise<void> {
         REFERENCE_LIST_CONTENT_SCRIPT_ID,
 
         (IDs: string[]) => {
-            IDs = [...new Set(IDs)]; // Filter duplicate references
+            /**
+             * Filter duplicate IDs
+             * Filter fake IDs (IDs that don't correspond to actual reference objects)
+             */
+            IDs = [...new Set(IDs)].filter((id) => {
+                try {
+                    DataStore.getReferenceById(id);
+                    return true;
+                } catch (e) {
+                    return false;
+                }
+            });
 
             /**
              * Apply the specified citation style to the references
-             * Note: Does html-encoding by default
+             * Does html-encoding by default
              */
             return processor.formatRefs(IDs);
         }

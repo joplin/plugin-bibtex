@@ -1,4 +1,3 @@
-import { Reference } from "../../model/reference.model";
 import { extractReferences } from "./extract-references";
 
 export default function (context) {
