@@ -1,4 +1,5 @@
 import { extractReferences } from "./extract-references";
+import { FORMAT_REFERENCES, GET_REFERENCES_BY_ID } from "./Message";
 
 export default function (context) {
     return {
@@ -16,17 +17,20 @@ export default function (context) {
                 state.tokens.push(token);
             });
 
-            /* Define how to render the previously defined token */
-            markdownIt.renderer.rules["reference_list"] = renderReferenceList;
-
-            function renderReferenceList(tokens, idx, options) {
+            /* Define how to render the reference_list token */
+            markdownIt.renderer.rules["reference_list"] = function (
+                tokens,
+                idx,
+                options
+            ) {
                 let IDs: string[] = tokens[idx]["attrs"][0][1];
                 if (IDs.length === 0) return "";
 
                 const script: string = `
-					webviewApi.postMessage("${contentScriptId}", ${JSON.stringify(
-                    IDs
-                )}).then(html => {
+					webviewApi.postMessage("${contentScriptId}", ${JSON.stringify({
+                    type: FORMAT_REFERENCES,
+                    IDs,
+                })}).then(html => {
 						const referenceListView = document.getElementById("references_list");
 						const referenceTitleView = document.getElementById("references_title");
 

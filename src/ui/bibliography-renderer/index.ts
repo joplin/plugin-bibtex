@@ -6,6 +6,7 @@ import {
     REFERENCE_LIST_CONTENT_SCRIPT_ID,
     SETTINGS_CSL_FILE_PATH_ID,
 } from "../../constants";
+import { FORMAT_REFERENCES, GET_REFERENCES_BY_ID } from "./Message";
 
 /**
  * Render the full list of references at the end of the note viewer
@@ -18,32 +19,39 @@ export async function registerBibliographyRenderer(): Promise<void> {
         "./ui/bibliography-renderer/render-list-content-script.js"
     );
 
-    /**
-     * Format the references according to the style specified by the user
-     */
     const processor = CSLProcessor.getInstance();
+
+    /* Handle messages sent by the content script */
     await joplin.contentScripts.onMessage(
         REFERENCE_LIST_CONTENT_SCRIPT_ID,
 
-        (IDs: string[]) => {
-            /**
-             * Filter duplicate IDs
-             * Filter fake IDs (IDs that don't correspond to actual reference objects)
-             */
-            IDs = [...new Set(IDs)].filter((id) => {
-                try {
-                    DataStore.getReferenceById(id);
-                    return true;
-                } catch (e) {
-                    return false;
-                }
-            });
+        (req: { type: string }) => {
+            switch (req.type) {
+                /**
+                 * Format the references according to the style specified by the user
+                 */
+                case FORMAT_REFERENCES:
+                    /**
+                     * Filter duplicate IDs
+                     * Filter fake IDs (IDs that don't correspond to actual reference objects)
+                     */
+                    let IDs: string[] = req["IDs"];
+                    IDs = [...new Set(IDs)].filter((id) => {
+                        try {
+                            DataStore.getReferenceById(id);
+                            return true;
+                        } catch (e) {
+                            return false;
+                        }
+                    });
 
-            /**
-             * Apply the specified citation style to the references
-             * Does html-encoding by default
-             */
-            return processor.formatRefs(IDs);
+                    /**
+                     * Apply the specified citation style to the references
+                     * Does html-encoding by default
+                     */
+                    return processor.formatRefs(IDs);
+                    break;
+            }
         }
     );
     setProcessorStyle(processor);
