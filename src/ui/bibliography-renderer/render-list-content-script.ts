@@ -10,7 +10,10 @@ export default function (context) {
             /* Appends a new custom token for references list */
             markdownIt.core.ruler.push("reference_list", (state) => {
                 /* Collect references from the note body */
-                const ids: string[] = extractReferences(state.tokens);
+                const ids: string[] = extractReferences(
+                    state.tokens,
+                    state.Token
+                );
 
                 /* Append reference_list token */
                 let token = new state.Token("reference_list", "", 0);
