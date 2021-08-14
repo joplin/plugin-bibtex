@@ -1,5 +1,4 @@
 import { extractReferences } from "./extract-references";
-import { renderInlineReferences } from "./render-inline-references";
 import { FORMAT_REFERENCES, GET_REFERENCE_BY_ID } from "./Message";
 
 export default function (context) {
@@ -52,14 +51,27 @@ export default function (context) {
 				`;
             };
 
-            /* Define how to render inline references (with custom styles) */
-            markdownIt.core.ruler.push("inline_reference", (state: any) => {
-                renderInlineReferences(
-                    state.tokens,
-                    contentScriptId,
-                    state.Token
-                );
-            });
+            markdownIt.renderer.rules["inline_reference"] = function (
+                tokens,
+                idx,
+                options
+            ) {
+                const token = tokens[idx];
+                let content = token.content;
+                const pattern: RegExp = /\[-@(\w|:|\?|\-)+\]/g;
+
+                const matches: string[] = content.match(pattern);
+                if (matches && matches.length) {
+                    matches.forEach((match) => {
+                        content = content.replace(
+                            match,
+                            "<strong>(Loading...)</strong>"
+                        );
+                    });
+                }
+
+                return content;
+            };
         },
     };
 }

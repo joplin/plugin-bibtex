@@ -1,6 +1,7 @@
 /**
  * Given a list of markdown tokens and their children,
- * returns a list of reference IDs that exists in the markdown tree
+ * Replaces every text token that contains a reference with an "inline_reference" token
+ * and returns a list of reference IDs that exists in the markdown tree
  * Uses recursive Depth-First-Search
  */
 export function extractReferences(tokens: any[], Token: any): string[] {
