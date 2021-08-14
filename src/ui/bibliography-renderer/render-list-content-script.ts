@@ -1,5 +1,6 @@
 import { extractReferences } from "./extract-references";
-import { FORMAT_REFERENCES, GET_REFERENCES_BY_ID } from "./Message";
+import { renderInlineReferences } from "./render-inline-references";
+import { FORMAT_REFERENCES, GET_REFERENCE_BY_ID } from "./Message";
 
 export default function (context) {
     return {
@@ -46,7 +47,16 @@ export default function (context) {
 					<div id="references_list"></div>
 					<style onload='${script.replace(/\n/g, " ")}'/>
 				`;
-            }
+            };
+
+            /* Define how to render inline references (with custom styles) */
+            markdownIt.core.ruler.push("inline_reference", (state: any) => {
+                renderInlineReferences(
+                    state.tokens,
+                    contentScriptId,
+                    state.Token
+                );
+            });
         },
     };
 }

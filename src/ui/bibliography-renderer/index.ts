@@ -6,7 +6,7 @@ import {
     REFERENCE_LIST_CONTENT_SCRIPT_ID,
     SETTINGS_CSL_FILE_PATH_ID,
 } from "../../constants";
-import { FORMAT_REFERENCES, GET_REFERENCES_BY_ID } from "./Message";
+import { FORMAT_REFERENCES, GET_REFERENCE_BY_ID } from "./Message";
 
 /**
  * Render the full list of references at the end of the note viewer
@@ -50,6 +50,16 @@ export async function registerBibliographyRenderer(): Promise<void> {
                      * Does html-encoding by default
                      */
                     return processor.formatRefs(IDs);
+                    break;
+
+                case GET_REFERENCE_BY_ID:
+                    console.log(req);
+                    const id = req["id"];
+                    try {
+                        return DataStore.getReferenceById(id);
+                    } catch (e) {
+                        return null;
+                    }
                     break;
             }
         }
