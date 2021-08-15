@@ -65,6 +65,7 @@ export async function registerBibliographyRenderer(): Promise<void> {
                     }
                     ans = {
                         ...ans,
+                        auth: ans["author"][0]["given"],
                         year: getDateYear(ans),
                     };
                     return ans;
