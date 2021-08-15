@@ -56,7 +56,22 @@ export default function (context) {
                     contentScriptId,
                     state.Token
                 );
+                console.log(state.tokens);
             });
+
+            /*
+            I want to intercept all inline reference tokens and replace them with the appropriate html
+            But for some reason, It does not work
+            I still don't understand exactly how to do this
+            and the documentation of markdown-it does not help either
+            */
+            markdownIt.renderer.rules["inline_reference"] = function (
+                tokens,
+                idx,
+                options
+            ) {
+                return "<strong>(Loading...)</strong>";
+            };
         },
     };
 }

@@ -30,10 +30,12 @@ function DFS(nodes: any[], contentScriptId: string, Token: any): void {
 
             const matches: string[] = nodes[i].content.match(pattern);
             if (matches && matches.length) {
-                const textToken = new Token("text", "", 0);
-                textToken.content = "(Loading)";
-                nodes[i] = textToken;
-                console.log(nodes[i]);
+                if (!nodes[i].children) nodes[i].children = [];
+                matches.forEach((match) => {
+                    const refToken = new Token("inline_reference", "", 0);
+                    refToken.content = match;
+                    nodes[i].children.push(refToken);
+                });
             }
 
             // Get all the matches of the pattern and replace them with the formatted reference
