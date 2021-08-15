@@ -1,5 +1,6 @@
 import joplin from "api";
 import { ContentScriptType } from "api/types";
+import { getDateYear } from "../../util/get-date.util";
 import { DataStore } from "../../data/data-store";
 import { CSLProcessor } from "../../util/csl-processor";
 import {
@@ -55,11 +56,18 @@ export async function registerBibliographyRenderer(): Promise<void> {
                 case GET_REFERENCE_BY_ID:
                     console.log(req);
                     const id = req["id"];
+                    let ans: any;
                     try {
-                        return DataStore.getReferenceById(id);
+                        ans = DataStore.getReferenceById(id);
                     } catch (e) {
+                        console.log(e);
                         return null;
                     }
+                    ans = {
+                        ...ans,
+                        year: getDateYear(ans),
+                    };
+                    return ans;
                     break;
             }
         }

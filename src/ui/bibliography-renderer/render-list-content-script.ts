@@ -1,4 +1,5 @@
 import { extractReferences } from "./extract-references";
+import { generateScript } from "./generateScript";
 import { FORMAT_REFERENCES, GET_REFERENCE_BY_ID } from "./Message";
 
 export default function (context) {
@@ -8,15 +9,21 @@ export default function (context) {
 
             /* Appends a new custom token for references list */
             markdownIt.core.ruler.push("reference_list", (state) => {
+                console.log(state.tokens);
                 /* Collect references from the note body */
                 const ids: string[] = extractReferences(
                     state.tokens,
                     state.Token
                 );
+                const script: string = generateScript(
+                    state.tokens,
+                    contentScriptId
+                );
 
                 /* Append reference_list token */
                 let token = new state.Token("reference_list", "", 0);
                 token.attrSet("refs", ids);
+                token.attrSet("script", script);
                 state.tokens.push(token);
             });
 
@@ -26,10 +33,12 @@ export default function (context) {
                 idx,
                 options
             ) {
+                console.log(tokens[idx]["attrs"]);
                 let IDs: string[] = tokens[idx]["attrs"][0][1];
                 if (IDs.length === 0) return "";
+                let script: string = tokens[idx]["attrs"][1][1];
 
-                const script: string = `
+                script += `
 					webviewApi.postMessage("${contentScriptId}", ${JSON.stringify({
                     type: FORMAT_REFERENCES,
                     IDs,
@@ -44,13 +53,16 @@ export default function (context) {
 					return false;
 				`;
 
+                console.log("This is the script " + script);
+
                 return `
 					<h1 id="references_title" style="display:none">References</h1>
 					<div id="references_list"></div>
-					<style onload='${script.replace(/\n/g, " ")}'/>
+					<style onload='${script.replace(/\n/g, " ")}' />
 				`;
             };
 
+            let inlineReferenceCounter: number = 0;
             markdownIt.renderer.rules["inline_reference"] = function (
                 tokens,
                 idx,
@@ -62,13 +74,16 @@ export default function (context) {
 
                 const matches: string[] = content.match(pattern);
                 if (matches && matches.length) {
-                    matches.forEach((match) => {
-                        content = content.replace(
-                            match,
-                            "<strong>(Loading...)</strong>"
-                        );
-                    });
+                    for (let i = 0; i < matches.length; i++) {
+                        const match = matches[i];
+                        const viewId = `bibtex_reference_${inlineReferenceCounter}`;
+                        const html = `<span id="${viewId}">${match}</span>`;
+                        content = content.replace(match, html);
+                        inlineReferenceCounter++;
+                    }
                 }
+
+                console.log("This is the actual HTML content " + content);
 
                 return content;
             };
